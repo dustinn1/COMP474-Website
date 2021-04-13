@@ -8,10 +8,9 @@ import Col from 'react-bootstrap/Col';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Helmet } from 'react-helmet';
 
-export default function Account() {
+export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [csrf, setCsrf] = useState('');
 
   let handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -21,42 +20,17 @@ export default function Account() {
     setPassword(event.target.value);
   }
 
-  let isResponseOk = (response) => {
-    if (response.status >= 200 && response.status <= 299) {
-      return response.json();
-    } else {
-      throw Error(response.statusText);
-    }
-  }
-
-  let getCSRF = () => {
-    fetch("http://localhost:8000/api/csrf/", {
-      credentials: "include",
-    })
-    .then((res) => {
-      let csrfToken = res.headers.get("X-CSRFToken");
-      setCsrf(csrfToken);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
-
-  let handleSubmit = (event) => {
+  let handleLogin = (event) => {
     event.preventDefault();
-    //getCSRF();
     fetch("http://localhost:8000/dj-rest-auth/login/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        //"X-CSRFToken": {csrf},
       },
       credentials: "include",
-      body: JSON.stringify(username, {username}, password, {password}),
+      body: JSON.stringify({username: username, password: password}),
     })
-    .then(isResponseOk)
-    .then((data) => {
-      console.log(data);
+    .then(() => {
       setUsername('');
       setPassword('');
     })
@@ -68,17 +42,17 @@ export default function Account() {
   return (
     <div className="background">
       <Helmet>
-        <title>Account</title>
+        <title>Login</title>
       </Helmet>
       <Container>
         <h1 className="text-center pt-4 pb-2">Login</h1>
-        <Form className="pb-5" onSubmit={handleSubmit}>
+        <Form className="pb-5" onSubmit={handleLogin}>
           <Form.Group as={Row} controlId="formUsername">
             <Form.Label column sm="2">
               Username
             </Form.Label>
             <Col sm="10">
-              <Form.Control type="text" placeholder="Username" value={username} onChange={handleUsernameChange}/>
+              <Form.Control type="text" placeholder="Username" value={username} onChange={handleUsernameChange} />
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="formPassword">
@@ -86,7 +60,7 @@ export default function Account() {
               Password
             </Form.Label>
             <Col sm="10">
-              <Form.Control type="password" placeholder="Password" value={password} onChange={handlePasswordChange}/>
+              <Form.Control type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
             </Col>
           </Form.Group>
           <div className="text-center">
