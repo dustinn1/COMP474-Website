@@ -8,9 +8,11 @@ import Nav from 'react-bootstrap/Nav';
 
 export default function Navigation() {
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar collapseOnSelect expand="xl" bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand>Project Manger</Navbar.Brand>
+        <LinkContainer exact to="/">
+          <Navbar.Brand>Project Manger</Navbar.Brand>
+        </LinkContainer>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
@@ -20,7 +22,7 @@ export default function Navigation() {
             </LinkContainer> */}
           </Nav>
           <Nav>
-            <LinkContainer exact to="/account">
+            <LinkContainer exact to="/users/login">
               <Nav.Link>Account</Nav.Link>
             </LinkContainer>
           </Nav>

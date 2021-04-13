@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import { LinkContainer } from 'react-router-bootstrap';
 import { Helmet } from 'react-helmet';
 
 export default function Account() {
@@ -14,8 +15,8 @@ export default function Account() {
         <title>Account</title>
       </Helmet>
       <Container>
-        <h1 className="center">Login</h1>
-        <Form>
+        <h1 className="text-center pt-4 pb-2">Register</h1>
+        <Form className="pb-5">
           <Form.Group as={Row} controlId="formUsername">
             <Form.Label column sm="2">
               Username
@@ -32,10 +33,26 @@ export default function Account() {
               <Form.Control type="password" placeholder="Password" />
             </Col>
           </Form.Group>
-          <Button variant="primary" type="submit">
-            Log in
-          </Button>
+          <Form.Group as={Row} controlId="formConfirmPassword">
+            <Form.Label column sm="2">
+              Confirm Password
+            </Form.Label>
+            <Col sm="10">
+              <Form.Control type="password" placeholder="Re-enter Password" />
+            </Col>
+          </Form.Group>
+          <div className="text-center">
+            <Button variant="outline-primary" type="submit">
+              Log in
+            </Button>
+          </div>
         </Form>
+        <p className="text-center">Already have an account?</p>
+        <div className="text-center">
+          <LinkContainer to="/users/login">
+            <Button variant="outline-dark" className="mt-auto">Login</Button>
+          </LinkContainer>
+        </div>
       </Container>
     </div>
   )
