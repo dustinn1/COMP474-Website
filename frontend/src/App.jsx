@@ -14,7 +14,7 @@ export default function App() {
     getSession();
   });
 
-  let getSession = () => {
+  const getSession = () => {
     fetch("http://localhost:8000/api/session/", {
       credentials: "include",
       headers: {'Content-Type': 'application/json'},
