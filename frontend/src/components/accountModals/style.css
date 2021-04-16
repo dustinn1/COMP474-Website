@@ -1,0 +1,19 @@
+.form-non-field-invalid {
+  text-align: center;
+  color: #dc3545;
+}
+
+.form-non-field-invalid:empty {
+  padding-top: 24px;
+}
+
+.account-modal-switch {
+  color: #3366BB;
+  cursor: pointer;
+}
+
+.account-modal-switch:hover
+.account-modal-switch:focus {
+  cursor: pointer;
+  text-decoration: underline;
+}

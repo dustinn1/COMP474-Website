@@ -4,15 +4,15 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navigation from './components/navigation';
 
 import Homepage from './pages/homepage';
-import Login from './pages/account/login';
-import Register from './pages/account/register';
+import Projects from './pages/projects';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     getSession();
-  });
+  }, []);
 
   const getSession = () => {
     fetch("http://localhost:8000/api/session/", {
@@ -26,6 +26,7 @@ export default function App() {
       } else {
         setIsAuthenticated(false);
       }
+      setLoaded(true);
     })
     .catch((err) => {
       console.log(err);
@@ -34,13 +35,14 @@ export default function App() {
 
   return (
     <Router> 
-      <p>{ isAuthenticated ? 'yes' : 'no' }</p>
-      <Navigation />
-      <Switch>
-        <Route exact path="/" component={Homepage} />
-        <Route exact path="/users/login" component={Login} />
-        <Route exact path="/users/register" component={Register} />
-      </Switch>
+      {/* <p>{ isAuthenticated ? 'yes' : 'no' }</p> 
+      <Navigation />*/}
+      {loaded && (
+        <Switch>
+          { !isAuthenticated && <Route exact path="/" component={Homepage} />}
+          <Route exact path="/" component={Projects} />
+        </Switch>
+      )}
     </Router>
   )
 }
