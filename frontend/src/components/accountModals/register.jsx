@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import './style.css';
 
 export default function RegisterModal(props) {
@@ -43,6 +41,8 @@ export default function RegisterModal(props) {
           setErrors(errors => ({...errors, password1: (data.password1) ? data.password1[0] : ''}));
           setErrors(errors => ({...errors, password2: (data.password2) ? data.password2[0] : ''}));
         })
+      } else {
+        window.location.reload(false);
       }
     })
     .catch((err) => {
@@ -106,7 +106,7 @@ export default function RegisterModal(props) {
       </Modal.Body>
       <Modal.Footer>
         Have an account already?
-        <p className="account-modal-switch" onClick={props.onSwitch}>Login</p>
+        <p className="account-modal-switch" onClick={props.changeModal}>Login</p>
       </Modal.Footer>
     </Modal>
   )

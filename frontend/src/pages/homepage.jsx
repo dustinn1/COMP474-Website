@@ -4,8 +4,8 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 
-import LoginModal from '../../components/accountModals/login';
-import RegisterModal from '../../components/accountModals/register';
+import LoginModal from '../components/accountModals/login';
+import RegisterModal from '../components/accountModals/register';
 
 export default function Homepage() {
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -32,12 +32,12 @@ export default function Homepage() {
       <LoginModal 
         show={showLoginModal} 
         onHide={() => setShowLoginModal(false)} 
-        onSwitch={() => {setShowLoginModal(false); setShowRegisterModal(true)}} 
+        changeModal={() => {setShowLoginModal(false); setShowRegisterModal(true)}}
       />
       <RegisterModal 
         show={showRegisterModal} 
         onHide={() => setShowRegisterModal(false)} 
-        onSwitch={() => {setShowRegisterModal(false); setShowLoginModal(true)}} 
+        changeModal={() => {setShowRegisterModal(false); setShowLoginModal(true)}} 
       />
     </>
   )

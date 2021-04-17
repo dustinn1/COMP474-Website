@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
 import Navigation from './components/navigation';
 
@@ -35,12 +35,13 @@ export default function App() {
 
   return (
     <Router> 
-      {/* <p>{ isAuthenticated ? 'yes' : 'no' }</p> 
-      <Navigation />*/}
+      {/* <Navigation /> */}
       {loaded && (
         <Switch>
-          { !isAuthenticated && <Route exact path="/" component={Homepage} />}
-          <Route exact path="/" component={Projects} />
+          <Route exact path="/">
+            { !isAuthenticated ? <Homepage /> : <Redirect to="/projects" /> }
+          </Route>
+          <Route exact path="/projects" component={Projects} />
         </Switch>
       )}
     </Router>
