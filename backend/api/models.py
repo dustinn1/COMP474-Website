@@ -46,7 +46,7 @@ class User(AbstractBaseUser):
         return self.username
 
     def get_short_name(self):
-        # The user is identified by their email address
+        # The user is identified by their username
         return self.username
 
     def __str__(self):
@@ -71,10 +71,10 @@ class User(AbstractBaseUser):
 class UserManager(BaseUserManager):
     def create_user(self, username, password=None):
         """
-                Creates and saves a User with the given email and password.
+                Creates and saves a User
                 """
         if not username:
-            raise ValueError('Users must have an email address')
+            raise ValueError('Users must have a username')
 
         user = self.model(
             email=self.normalize_username(username),
@@ -86,7 +86,7 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, username, password):
         """
-        Creates and saves a superuser with the given email and password.
+        Creates and saves a superuser
         """
         user = self.create_user(
             username,
