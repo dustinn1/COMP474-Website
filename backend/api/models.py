@@ -5,11 +5,9 @@ from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
 
-
 # Create your models here.
 class document(models.Model):
     doc_name = models.CharField(max_length=20)
-
 
 class Project(models.Model):
     project_name = models.CharField(max_length=40)
@@ -25,7 +23,6 @@ class Project(models.Model):
         user = get_user_model()
         users = user.objects.all()
         return super(Project, self).filter(private=True, user=users)
-
 
 class User(AbstractBaseUser):
     username = models.CharField(
@@ -67,7 +64,6 @@ class User(AbstractBaseUser):
         "Is the user a admin member?"
         return self.admin
 
-
 class UserManager(BaseUserManager):
     def create_user(self, username, password=None):
         """
@@ -95,7 +91,6 @@ class UserManager(BaseUserManager):
         user.admin = True
         user.save(using=self._db)
         return user
-
 
 class User(AbstractBaseUser):
     objects = UserManager()

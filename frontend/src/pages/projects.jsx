@@ -1,7 +1,8 @@
 import React from 'react'
+import { Helmet } from 'react-helmet';
 import Container from 'react-bootstrap/Container'
 
-import { Helmet } from 'react-helmet';
+import Navigation from '../components/navigation';
 
 export default function Projects() {
   return (
@@ -9,8 +10,9 @@ export default function Projects() {
       <Helmet>
         <title>All Projects</title>
       </Helmet>
+      <Navigation pageTitle="All Projects"/>
       <Container>
-        <h1 className="text-center pt-4 pb-2">projects</h1>
+        
       </Container>
     </div>
   )

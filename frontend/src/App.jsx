@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
-import Navigation from './components/navigation';
-
 import Homepage from './pages/homepage';
+import Login from './pages/login';
 import Projects from './pages/projects';
 
 export default function App() {
@@ -33,15 +32,32 @@ export default function App() {
     });
   };
 
+  function PrivateRoute({ children, ...rest }) {
+    return (
+      <Route
+        {...rest}
+        render={({ location }) =>
+          isAuthenticated ? 
+          children : 
+          <Redirect to={{pathname: "/login", state: { from: location }}}/>
+        }
+      />
+    );
+  }
+
   return (
     <Router> 
-      {/* <Navigation /> */}
       {loaded && (
         <Switch>
           <Route exact path="/">
             { !isAuthenticated ? <Homepage /> : <Redirect to="/projects" /> }
           </Route>
-          <Route exact path="/projects" component={Projects} />
+          <Route exact path="/login">
+            { !isAuthenticated ? <Login /> : <Redirect to="/" /> }
+          </Route>
+          <PrivateRoute exact path="/projects">
+            <Projects />
+          </PrivateRoute>
         </Switch>
       )}
     </Router>

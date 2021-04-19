@@ -42,7 +42,7 @@ export default function RegisterModal(props) {
           setErrors(errors => ({...errors, password2: (data.password2) ? data.password2[0] : ''}));
         })
       } else {
-        window.location.reload(false);
+        window.location.reload();
       }
     })
     .catch((err) => {

@@ -19,7 +19,6 @@ export default function LoginModal(props) {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    event.stopPropagation();
     fetch("http://localhost:8000/dj-rest-auth/login/", {
       method: "POST",
       headers: {
