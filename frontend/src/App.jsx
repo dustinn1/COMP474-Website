@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-d
 import Homepage from './pages/homepage';
 import Login from './pages/login';
 import Projects from './pages/projects';
+import Project from './pages/project';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -57,6 +58,9 @@ export default function App() {
           </Route>
           <PrivateRoute exact path="/projects">
             <Projects />
+          </PrivateRoute>
+          <PrivateRoute exact path="/project/:id">
+            <Project />
           </PrivateRoute>
         </Switch>
       )}

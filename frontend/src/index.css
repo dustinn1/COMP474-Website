@@ -2,6 +2,10 @@ body {
   margin: 0;
 }
 
+section {
+  margin-top: 20px;
+}
+
 svg[data-prefix=fas] {
   margin-right: 0.5em;
 }

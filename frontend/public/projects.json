@@ -1,0 +1,20 @@
+[
+  {
+    "projectID": 1,
+    "name": "Project 1",
+    "description": "A project for Project 1",
+    "tags": ["this", "is", "a", "tag"],
+    "visibility": "public",
+    "dateStart": "2020-10-02",
+    "dateEnded": "2021-01-02"
+  },
+  {
+    "projectID": 2,
+    "name": "Project 3",
+    "description": "A project for Project 2",
+    "tags": ["this", "is", "a", "tag", "2"],
+    "visibility": "private",
+    "dateStart": "2020-10-02",
+    "dateEnded": "2021-01-02"
+  }
+]
