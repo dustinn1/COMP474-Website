@@ -6,6 +6,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=25)
 
+
 class Project(models.Model):
     project_name = models.CharField(max_length=50)
     description = models.CharField(max_length=255)
@@ -23,6 +24,7 @@ class Document(models.Model):
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=255)
+    added_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     date_added = models.DateField()
 
     def __str__(self):
