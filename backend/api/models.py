@@ -1,96 +1,29 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
-from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser
-)
 
-# Create your models here.
-class document(models.Model):
-    doc_name = models.CharField(max_length=20)
+class Profile(models.Model):
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=25)
+    last_name = models.CharField(max_length=25)
 
 class Project(models.Model):
-    project_name = models.CharField(max_length=40)
-    from_dateRange = models.DateField()
-    to_dateRange = models.DateField()
-    tags = models.CharField(max_length=10)
-    documents = models.ManyToManyField(document)
-
-    def public_proj(self):
-        return super(Project, self).filter(private=False)
-
-    def private_proj(self):
-        user = get_user_model()
-        users = user.objects.all()
-        return super(Project, self).filter(private=True, user=users)
-
-class User(AbstractBaseUser):
-    username = models.CharField(
-        verbose_name='Username',
-        max_length=255,
-        unique=True,
-    )
-    is_active = models.BooleanField(default=True)
-    admin = models.BooleanField(default=False)  # a superuser
-
-    # notice the absence of a "Password field", that is built in.
-
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []  # required username and password fields
-
-    def get_full_name(self):
-        # The user is identified by username
-        return self.username
-
-    def get_short_name(self):
-        # The user is identified by their username
-        return self.username
+    project_name = models.CharField(max_length=50)
+    description = models.CharField(max_length=255)
+    visibility = models.CharField(max_length=7)
+    date_started = models.DateField()
+    date_ended = models.DateField()
+    
+    users = models.ManyToManyField(get_user_model(), related_name="users")
+    manages = models.ManyToManyField(get_user_model(), related_name="managers")
 
     def __str__(self):
-        return self.username
+        return self.project_name
 
-    def has_perm(self, perm, obj=None):
-        "Does the user have a specific permission?"
-        # Simplest possible answer: Yes, always
-        return True
+class Document(models.Model):
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50)
+    description = models.CharField(max_length=255)
+    date_added = models.DateField()
 
-    def has_module_perms(self, app_label):
-        "Does the user have permissions to view the app `app_label`?"
-        # Simplest possible answer: Yes, always
-        return True
-
-    @property
-    def is_admin(self):
-        "Is the user a admin member?"
-        return self.admin
-
-class UserManager(BaseUserManager):
-    def create_user(self, username, password=None):
-        """
-                Creates and saves a User
-                """
-        if not username:
-            raise ValueError('Users must have a username')
-
-        user = self.model(
-            email=self.normalize_username(username),
-        )
-
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, username, password):
-        """
-        Creates and saves a superuser
-        """
-        user = self.create_user(
-            username,
-            password=password,
-        )
-        user.admin = True
-        user.save(using=self._db)
-        return user
-
-class User(AbstractBaseUser):
-    objects = UserManager()
+    def __str__(self):
+        return self.title
