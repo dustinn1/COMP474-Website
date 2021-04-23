@@ -6,6 +6,8 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=25)
 
+    def __str__(self):
+        return self.first_name + " " + self.last_name
 
 class Project(models.Model):
     project_name = models.CharField(max_length=50)
@@ -15,7 +17,7 @@ class Project(models.Model):
     date_ended = models.DateField()
     
     users = models.ManyToManyField(get_user_model(), related_name="users")
-    manages = models.ManyToManyField(get_user_model(), related_name="managers")
+    managers = models.ManyToManyField(get_user_model(), related_name="managers")
 
     def __str__(self):
         return self.project_name
