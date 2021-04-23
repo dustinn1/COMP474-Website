@@ -15,13 +15,13 @@ class SessionView(APIView):
 
     @staticmethod
     def get(request, format=None):
-        return JsonResponse({'isAuthenticated': True})
+        return JsonResponse({'isAuthenticated': True, 'id': request.user.id})
 
 
-class WhoAmIView(APIView):
+class CurrentUser(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
     @staticmethod
     def get(request, format=None):
-        return JsonResponse({'username': request.user.username})
+        return JsonResponse({'id': request.user.id, 'username': request.user.username})

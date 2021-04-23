@@ -9,11 +9,11 @@ import Navigation from '../../components/navigation'
 
 import './styles.css';
 
-export default function Projects() {
+export default function AllProjects(props) {
   const [projects, setProjects] = useState([]);
 
-  const getJSON = () => {
-    fetch("/projects.json", {
+  useEffect(() => {
+    fetch(`http://localhost:8000/api/projects/${props.userId}?format=json`, {
       headers: {'Content-Type': 'application/json'},
     })
     .then((res) => res.json())
@@ -21,11 +21,7 @@ export default function Projects() {
     .catch((err) => {
       console.log(err);
     });
-  };
-
-  useEffect(() => {
-    getJSON();
-  }, [])
+  }, [props.userId])
 
   return (
     <div>
@@ -38,21 +34,21 @@ export default function Projects() {
           <div className="d-flex">
             {projects.map((project) => {
               return (
-                <LinkContainer to={`/project/${project.projectID}`}>
+                <LinkContainer to={`/project/${project.id}`} key={project.id}>
                   <Card className="project-card">
                     <Card.Header as="h5">
-                      {project.name}
+                      {project.project_name}
                       <small>{project.visibility}</small>
                     </Card.Header>
                     <Card.Body>
                       <Card.Text>
                         {project.description}<br /><br />
-                        {project.tags.map((tag) => {
+                        {/* project.tags.map((tag) => {
                           return (
                             <Badge variant="primary">{tag}</Badge>
                           )
-                        })}<br /><br />
-                        {project.dateStart} to {project.dateEnded}
+                        })*/}<br /><br />
+                        {project.date_started} to {project.date_ended}
                       </Card.Text>
                     </Card.Body>
                   </Card>

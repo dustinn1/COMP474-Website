@@ -10,7 +10,7 @@ export default function Projects() {
   let { id } = useParams();
 
   return (
-    <div>
+    <>
       <Helmet>
         <title>Project {id}</title>
       </Helmet>
@@ -20,6 +20,6 @@ export default function Projects() {
           <h1>Project {id}</h1>
         </section>
       </Container>
-    </div>
+    </>
   )
 }

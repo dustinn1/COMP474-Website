@@ -3,18 +3,16 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-d
 
 import Homepage from './pages/homepage';
 import Login from './pages/login';
-import Projects from './pages/projects';
+import AllProjects from './pages/projects/all';
+import NewProject from './pages/projects/new'
 import Project from './pages/project';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [userId, setUserId] = useState(0);
 
   useEffect(() => {
-    getSession();
-  }, []);
-
-  const getSession = () => {
     fetch("http://localhost:8000/api/session/", {
       credentials: "include",
       headers: {'Content-Type': 'application/json'},
@@ -23,6 +21,7 @@ export default function App() {
     .then((data) => {
       if (data.isAuthenticated) {
         setIsAuthenticated(true);
+        setUserId(data.id);
       } else {
         setIsAuthenticated(false);
       }
@@ -31,7 +30,7 @@ export default function App() {
     .catch((err) => {
       console.log(err);
     });
-  };
+  }, []);
 
   function PrivateRoute({ children, ...rest }) {
     return (
@@ -57,7 +56,10 @@ export default function App() {
             { !isAuthenticated ? <Login /> : <Redirect to="/" /> }
           </Route>
           <PrivateRoute exact path="/projects">
-            <Projects />
+            <AllProjects userId={userId} />
+          </PrivateRoute>
+          <PrivateRoute exact path="/projects/new">
+            <NewProject />
           </PrivateRoute>
           <PrivateRoute exact path="/project/:id">
             <Project />
