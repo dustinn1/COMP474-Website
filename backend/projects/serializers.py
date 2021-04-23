@@ -1,15 +1,19 @@
 from rest_framework import serializers
-from .models import Profile, Project, Document
+from django.contrib.auth.models import User
+from .models import Project, Document
+
+class UserSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = User
+    fields = ('id', 'username', 'email', 'first_name', 'last_name')
 
 class ProjectSerializer(serializers.ModelSerializer):
+  users = UserSerializer(read_only=True, many=True)
+  managers = UserSerializer(read_only=True, many=True)
+
   class Meta:
     model = Project
     fields = ('id', 'project_name', 'description', 'visibility', 'date_started', 'date_ended', 'users', 'managers')
-
-class ProfileSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = Profile
-    fields = ('id', 'user', 'first_name', 'last_name')
 
 class DocumentSerializer(serializers.ModelSerializer):
   class Meta:

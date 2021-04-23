@@ -4,8 +4,32 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.db.models import Q
 
-from .models import Project, Profile, Document
-from .serializers import ProjectSerializer, ProfileSerializer, DocumentSerializer
+from django.contrib.auth.models import User
+from .models import Project, Document
+
+from .serializers import UserSerializer, ProjectSerializer, DocumentSerializer
+
+# Get all users
+@api_view(['GET'])
+def users_all(request):
+  if request.method == 'GET':
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)
+
+# Get an individual user
+@api_view(['GET'])
+def user_individual(request, pk):
+  try: 
+      user = User.objects.get(pk=pk)
+  except User.DoesNotExist: 
+    return Response(
+      {'message': 'This user does not exist'}, 
+      status=404
+    ) 
+  if request.method == 'GET':
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
 
 # Get all projects
 @api_view(['GET'])
@@ -41,29 +65,6 @@ def project_individual(request, pk):
     ) 
   if request.method == 'GET':
     serializer = ProjectSerializer(project)
-    return Response(serializer.data)
-
-
-# Get all profiles
-@api_view(['GET'])
-def profiles_all(request):
-  if request.method == 'GET':
-    profiles = Profile.objects.all()
-    serializer = ProfileSerializer(profiles, many=True)
-    return Response(serializer.data)
-
-# Get an individual profile of a user
-@api_view(['GET'])
-def profile_individual(request, pk):
-  try: 
-      profile = Profile.objects.get(pk=pk) 
-  except Profile.DoesNotExist: 
-    return Response(
-      {'message': 'This profile does not exist'}, 
-      status=404
-    ) 
-  if request.method == 'GET':
-    serializer = ProfileSerializer(profile)
     return Response(serializer.data)
 
 

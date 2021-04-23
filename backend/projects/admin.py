@@ -1,10 +1,5 @@
 from django.contrib import admin
-from .models import Profile, Project, Document
-
-class ProfileAdmin(admin.ModelAdmin):
-  list_display = ('user', 'first_name', 'last_name')
-
-admin.site.register(Profile, ProfileAdmin)
+from .models import Project, Document
 
 class ProjectAdmin(admin.ModelAdmin):
   list_display = ('project_name', 'visibility', 'date_started', 'date_ended')

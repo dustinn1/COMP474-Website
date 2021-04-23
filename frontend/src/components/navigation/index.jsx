@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { LinkContainer } from "react-router-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +11,23 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 export default function Navigation(props) {
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/currentuser/", {
+      credentials: "include",
+      headers: {'Content-Type': 'application/json'},
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data) {
+        setUsername(data.username);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }, []);
 
   const handleLogout = (event) => {
     event.preventDefault();
@@ -42,7 +59,7 @@ export default function Navigation(props) {
           </Nav>
           <Nav>
             <NavDropdown title="Account" id="basic-nav-dropdown">
-              <Dropdown.Header>User</Dropdown.Header>
+              <Dropdown.Header>{username}</Dropdown.Header>
               <NavDropdown.Divider />
               <LinkContainer to="/user/settings">
                 <NavDropdown.Item>
