@@ -7,10 +7,15 @@ class UserSerializer(serializers.ModelSerializer):
     model = User
     fields = ('id', 'username', 'email', 'first_name', 'last_name')
 
-class ProjectSerializer(serializers.ModelSerializer):
+class ProjectSerializerRead(serializers.ModelSerializer):
   users = UserSerializer(read_only=True, many=True)
   managers = UserSerializer(read_only=True, many=True)
 
+  class Meta:
+    model = Project
+    fields = ('id', 'project_name', 'description', 'visibility', 'date_started', 'date_ended', 'users', 'managers')
+
+class ProjectSerializer(serializers.ModelSerializer):
   class Meta:
     model = Project
     fields = ('id', 'project_name', 'description', 'visibility', 'date_started', 'date_ended', 'users', 'managers')

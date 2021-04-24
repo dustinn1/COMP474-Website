@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from .models import Project, Document
 
-from .serializers import UserSerializer, ProjectSerializer, DocumentSerializer
+from .serializers import UserSerializer, ProjectSerializer, ProjectSerializerRead, DocumentSerializer
 
 # Get all users
 @api_view(['GET'])
@@ -31,13 +31,19 @@ def user_individual(request, pk):
     serializer = UserSerializer(user)
     return Response(serializer.data)
 
-# Get all projects
-@api_view(['GET'])
+# Get all projects or Create a new project
+@api_view(['GET', 'POST'])
 def projects_all(request):
   if request.method == 'GET':
     projects = Project.objects.all()
-    serializer = ProjectSerializer(projects, many=True)
+    serializer = ProjectSerializerRead(projects, many=True)
     return Response(serializer.data)
+  elif request.method == 'POST':
+    serializer = ProjectSerializer(data=request.data)
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data, 201)
+    return Response(serializer.errors, 400)
 
 # Get all projects that a user can view
 @api_view(['GET'])
@@ -53,8 +59,8 @@ def projects_user(request, user):
     serializer = ProjectSerializer(project, many=True)
     return Response(serializer.data)
 
-# Get a specific project
-@api_view(['GET'])
+# Get a specific project, Modify a specific project, or Delete a specific project
+@api_view(['GET', 'PUT', 'DELETE'])
 def project_individual(request, pk):
   try: 
       project = Project.objects.get(pk=pk) 
@@ -66,6 +72,18 @@ def project_individual(request, pk):
   if request.method == 'GET':
     serializer = ProjectSerializer(project)
     return Response(serializer.data)
+  elif request.method == 'PUT':
+    serializer = ProjectSerializer(project, data=request.data)
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data, 200)
+    return Response(serializer.errors, 400)
+  elif request.method == 'DELETE':
+    project.delete()
+    return Response(
+      {'message': 'This project has been deleted'}, 
+      status=204
+    )
 
 
 @api_view(['GET'])
