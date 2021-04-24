@@ -8,8 +8,8 @@ class Project(models.Model):
     date_started = models.DateField()
     date_ended = models.DateField()
     
-    users = models.ManyToManyField(get_user_model(), related_name="users")
-    managers = models.ManyToManyField(get_user_model(), related_name="managers")
+    users = models.ManyToManyField(get_user_model(), related_name="users", blank=True)
+    managers = models.ManyToManyField(get_user_model(), related_name="managers", blank=True)
 
     def __str__(self):
         return self.project_name

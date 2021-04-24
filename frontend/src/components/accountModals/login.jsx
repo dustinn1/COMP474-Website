@@ -35,7 +35,7 @@ export default function LoginModal(props) {
           setErrors(errors => ({...errors, password: (data.password) ? data.password[0] : ''}));
         })
       } else {
-        window.location.reload(false);
+        window.location.reload();
       }
     })  
     .catch((err) => {

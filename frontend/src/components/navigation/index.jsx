@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Cookies from 'js-cookie';
 import { LinkContainer } from "react-router-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,27 +8,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Dropdown from 'react-bootstrap/Dropdown';
 
 export default function Navigation(props) {
-  const [username, setUsername] = useState('');
-
-  useEffect(() => {
-    fetch("http://localhost:8000/api/currentuser/", {
-      credentials: "include",
-      headers: {'Content-Type': 'application/json'},
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data) {
-        setUsername(data.username);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }, []);
-
   const handleLogout = (event) => {
     event.preventDefault();
     fetch("http://localhost:8000/dj-rest-auth/logout/", {
@@ -59,8 +40,6 @@ export default function Navigation(props) {
           </Nav>
           <Nav>
             <NavDropdown title="Account" id="basic-nav-dropdown">
-              <Dropdown.Header>{username}</Dropdown.Header>
-              <NavDropdown.Divider />
               <LinkContainer to="/user/settings">
                 <NavDropdown.Item>
                   <FontAwesomeIcon icon={faCog} />

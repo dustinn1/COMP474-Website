@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet';
 import { LinkContainer } from 'react-router-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
-import Badge from 'react-bootstrap/Badge';
 
 import Navigation from '../../components/navigation'
 
@@ -31,7 +30,7 @@ export default function AllProjects(props) {
       <Navigation pageTitle="All Projects"/>
       <Container>
         <section>
-          <div className="d-flex">
+          <div className="d-flex flex-wrap justify-content-center">
             {projects.map((project) => {
               return (
                 <LinkContainer to={`/project/${project.id}`} key={project.id}>

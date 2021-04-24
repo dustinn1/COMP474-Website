@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import { Helmet } from "react-helmet";
 
 import Homepage from './pages/homepage';
 import Login from './pages/login';
@@ -46,26 +47,32 @@ export default function App() {
   }
 
   return (
-    <Router> 
-      {loaded && (
-        <Switch>
-          <Route exact path="/">
-            { !isAuthenticated ? <Homepage /> : <Redirect to="/projects" /> }
-          </Route>
-          <Route exact path="/login">
-            { !isAuthenticated ? <Login /> : <Redirect to="/" /> }
-          </Route>
-          <PrivateRoute exact path="/projects">
-            <AllProjects userId={userId} />
-          </PrivateRoute>
-          <PrivateRoute exact path="/projects/new">
-            <NewProject />
-          </PrivateRoute>
-          <PrivateRoute exact path="/project/:id">
-            <Project />
-          </PrivateRoute>
-        </Switch>
-      )}
-    </Router>
+    <>
+      <Helmet 
+        titleTemplate="Project Manager - %s"
+        defaultTitle="Project Manager"
+      />
+      <Router> 
+        {loaded && (
+          <Switch>
+            <Route exact path="/">
+              { !isAuthenticated ? <Homepage /> : <Redirect to="/projects" /> }
+            </Route>
+            <Route exact path="/login">
+              { !isAuthenticated ? <Login /> : <Redirect to="/" /> }
+            </Route>
+            <PrivateRoute exact path="/projects">
+              <AllProjects userId={userId} />
+            </PrivateRoute>
+            <PrivateRoute exact path="/projects/new">
+              <NewProject />
+            </PrivateRoute>
+            <PrivateRoute exact path="/project/:id">
+              <Project />
+            </PrivateRoute>
+          </Switch>
+        )}
+      </Router>
+    </>
   )
 }

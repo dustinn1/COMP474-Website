@@ -31,6 +31,7 @@ def user_individual(request, pk):
     serializer = UserSerializer(user)
     return Response(serializer.data)
 
+
 # Get all projects or Create a new project
 @api_view(['GET', 'POST'])
 def projects_all(request):
@@ -49,7 +50,7 @@ def projects_all(request):
 @api_view(['GET'])
 def projects_user(request, user):
   try: 
-      project = Project.objects.filter(Q(users__in=user) | Q(visibility="public"))
+      project = Project.objects.filter(Q(users__in=user) | Q(visibility="public")).distinct()
   except Project.DoesNotExist: 
     return Response(
       {'message': 'This user has no projects'}, 
