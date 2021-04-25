@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router';
 import Cookies from 'js-cookie';
 import { Helmet } from 'react-helmet';
+import dayjs from 'dayjs';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
@@ -14,7 +15,7 @@ export default function NewProject(props) {
   // form states
   const [projectName, setProjectName] = useState('');
   const [description, setDescription] = useState('');
-  const [visibility, setVisbiltiy] = useState('public');
+  const [visibility, setVisbility] = useState('public');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [errors, setErrors] = useState([Boolean])
@@ -44,7 +45,7 @@ export default function NewProject(props) {
   }
 
   const handleVisibility = (event) => {
-    setVisbiltiy(event.target.value.toLowerCase());
+    setVisbility(event.target.value);
   }
 
   const handleStartDate = (event) => {
@@ -75,7 +76,7 @@ export default function NewProject(props) {
         "X-CSRFToken": Cookies.get('csrftoken'),
       },
       credentials: "include",
-      body: JSON.stringify({project_name: projectName, description: description, visibility: visibility, date_started: startDate, date_ended: endDate, users: users, managers: []}),
+      body: JSON.stringify({project_name: projectName, description: description, visibility: visibility.toLowerCase(), date_started: startDate, date_ended: endDate, users: users, managers: []}),
     })
     .then((res) => {
       if (!res.ok) {
@@ -90,7 +91,6 @@ export default function NewProject(props) {
       } else {
         res.json()
         .then((data) => {
-          console.log(data);
           setCreatedProjectID(data.id);
         })
       }
@@ -98,6 +98,16 @@ export default function NewProject(props) {
     .catch((err) => {
       console.log(err);
     });
+  }
+
+  const getToday = (id) => {
+    const today = dayjs().format('YYYY-MM-DD');
+    document.getElementById(id).value = today;
+    if (id === "formStartDate") {
+      setStartDate(today);
+    } else if (id === "formEndDate") {
+      setEndDate(today);
+    }
   }
 
   return (
@@ -154,6 +164,7 @@ export default function NewProject(props) {
               <Col sm="10">
                 <Form.Control type="date" value={startDate} onChange={handleStartDate}
                   isInvalid={errors['date_started']} />
+                <span className="project-create-today" onClick={() => getToday("formStartDate")}>Today</span>
                 {errors['date_started'] && (
                   <Form.Control.Feedback type="invalid">Please enter a Date.</Form.Control.Feedback>
                 )}
@@ -166,6 +177,7 @@ export default function NewProject(props) {
               <Col sm="10">
                 <Form.Control type="date" value={endDate} onChange={handleEndDate}
                   isInvalid={errors['date_ended']} />
+                <span className="project-create-today" onClick={() => getToday("formEndDate")}>Today</span>
                 {errors['date_ended'] && (
                   <Form.Control.Feedback type="invalid">Please enter a Date.</Form.Control.Feedback>
                 )}

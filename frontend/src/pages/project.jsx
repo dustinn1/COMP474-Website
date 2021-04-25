@@ -30,7 +30,7 @@ export default function Project() {
       <Helmet>
         <title>{project.project_name}</title>
       </Helmet>
-      <Navigation pageTitle={project.project_name}/>
+      <Navigation pageTitle={`Project ${project.id}: ${project.project_name}`}/>
       <Container>
         <section>
           <h1>{project.project_name}</h1>

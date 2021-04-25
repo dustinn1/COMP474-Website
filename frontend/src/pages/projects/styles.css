@@ -41,3 +41,14 @@
 .project-user-list > .project-user-list-user:nth-child(odd) {
   background-color: #efefef;
 }
+
+span.project-create-today {
+  font-size: 14px;
+  color: #3366BB;
+}
+
+span.project-create-today:hover,
+span.project-create-today:focus {
+  cursor: pointer;
+  text-decoration: underline;
+}
