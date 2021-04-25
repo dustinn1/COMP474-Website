@@ -7,6 +7,7 @@ import Login from './pages/login';
 import AllProjects from './pages/projects/all';
 import NewProject from './pages/projects/new'
 import Project from './pages/project';
+import UserSettings from './pages/user_settings';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -65,10 +66,13 @@ export default function App() {
               <AllProjects userId={userId} />
             </PrivateRoute>
             <PrivateRoute exact path="/projects/new">
-              <NewProject />
+              <NewProject userId={userId} />
             </PrivateRoute>
             <PrivateRoute exact path="/project/:id">
               <Project />
+            </PrivateRoute>
+            <PrivateRoute exact path="/user/settings">
+              <UserSettings />
             </PrivateRoute>
           </Switch>
         )}

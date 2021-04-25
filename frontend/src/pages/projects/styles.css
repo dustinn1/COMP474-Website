@@ -19,3 +19,25 @@
   margin-left: 2px;
   margin-right: 2px;
 }
+
+.project-user-list {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid #000;
+}
+
+.project-user-list > * {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.project-user-list > .project-user-list-header {
+  border-bottom: 1px solid #000;
+  font-weight: 700;
+}
+
+.project-user-list > .project-user-list-user:nth-child(odd) {
+  background-color: #efefef;
+}

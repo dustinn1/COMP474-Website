@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router';
 import Cookies from 'js-cookie';
 import { Helmet } from 'react-helmet';
 import Container from 'react-bootstrap/Container';
@@ -9,14 +10,30 @@ import Button from 'react-bootstrap/Button';
 
 import Navigation from '../../components/navigation'
 
-
-export default function NewProject() {
+export default function NewProject(props) {
+  // form states
   const [projectName, setProjectName] = useState('');
   const [description, setDescription] = useState('');
   const [visibility, setVisbiltiy] = useState('public');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [errors, setErrors] = useState([Boolean])
+  const [createdProjectID, setCreatedProjectID] = useState(0);
+
+  const [usersList, setUsersList] = useState([]);
+  const [userCheckboxes, setUserCheckboxes] = useState({});
+
+  useEffect(() => {
+    fetch(`http://localhost:8000/api/users/`, {
+      headers: {'Content-Type': 'application/json'},
+    })
+    .then((res) => res.json())
+    .then((json) => setUsersList(json))
+    .catch((err) => {
+      console.log(err);
+    });
+    setUserCheckboxes({[props.userId]: true})
+  }, [props.userId])
 
   const handleProjectName = (event) => {
     setProjectName(event.target.value);
@@ -27,7 +44,7 @@ export default function NewProject() {
   }
 
   const handleVisibility = (event) => {
-    setVisbiltiy(event.target.value);
+    setVisbiltiy(event.target.value.toLowerCase());
   }
 
   const handleStartDate = (event) => {
@@ -38,8 +55,19 @@ export default function NewProject() {
     setEndDate(event.target.value);
   }
 
+  const handleCheckbox = (event) => {
+    setUserCheckboxes(userCheckboxes => ({...userCheckboxes, [event.target.id]: (event.target.checked ? true : false ) }));
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    let users = [];
+    console.log(userCheckboxes)
+    for (let i in userCheckboxes) {
+      if (userCheckboxes[i]) {
+        users.push(parseInt(i));
+      }
+    }
     fetch("http://localhost:8000/api/projects/", {
       method: "POST",
       headers: {
@@ -47,7 +75,7 @@ export default function NewProject() {
         "X-CSRFToken": Cookies.get('csrftoken'),
       },
       credentials: "include",
-      body: JSON.stringify({project_name: projectName, description: description, visibility: visibility, date_started: startDate, date_ended: endDate, users: [], managers: []}),
+      body: JSON.stringify({project_name: projectName, description: description, visibility: visibility, date_started: startDate, date_ended: endDate, users: users, managers: []}),
     })
     .then((res) => {
       if (!res.ok) {
@@ -57,11 +85,16 @@ export default function NewProject() {
           setErrors(errors => ({...errors, description: (data.description) ? true : false}));
           setErrors(errors => ({...errors, date_started: (data.date_started) ? true : false}));
           setErrors(errors => ({...errors, date_ended: (data.date_ended) ? true : false}));
+          users = [];
         })
       } else {
-        // add go back to all projects page
+        res.json()
+        .then((data) => {
+          console.log(data);
+          setCreatedProjectID(data.id);
+        })
       }
-    })  
+    }) 
     .catch((err) => {
       console.log(err);
     });
@@ -69,6 +102,9 @@ export default function NewProject() {
 
   return (
     <>
+      {createdProjectID !== 0 && (
+        <Redirect to={`/project/${createdProjectID}`} />
+      )}
       <Helmet>
         <title>New Project</title>
       </Helmet>
@@ -135,9 +171,37 @@ export default function NewProject() {
                 )}
               </Col>
             </Form.Group>
+            <div className="project-user-list mb-4">
+              <div className="project-user-list-header">
+                <Row>
+                  <Col xs={8}>Username</Col>
+                  <Col xs={4}>Can View</Col>
+                </Row>
+              </div>
+              {usersList.map((user) => {
+                return (
+                  <div className="project-user-list-user" key={user.id}>
+                    <Row>
+                      <Col xs={8}>
+                        {user.username} {(user.id === props.userId) ? "(you)" : ''}</Col>
+                      <Col xs={4}>
+                        <Form.Check 
+                          custom
+                          type="checkbox"
+                          id={user.id}
+                          disabled={(user.id === props.userId)}
+                          checked={(user.id === props.userId) || userCheckboxes[user.id] || false}
+                          onChange={handleCheckbox}
+                        />
+                      </Col>
+                    </Row>
+                  </div>
+                )
+              })}
+            </div>
             <div className="text-center">
               <Button variant="outline-primary" type="submit">
-                Log in
+                Create Project
               </Button>
             </div>
           </Form>

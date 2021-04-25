@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Navigation from '../components/navigation'
 
 
-export default function Projects() {
+export default function Project() {
   const [project, setProject] = useState([]);
 
   let { id } = useParams();
@@ -38,6 +38,7 @@ export default function Projects() {
           <p>{project.visibility}</p>
           <p>{project.date_started}</p>
           <p>{project.ended}</p>
+          <p>{project.users}</p>
         </section>
       </Container>
     </>
