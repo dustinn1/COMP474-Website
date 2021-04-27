@@ -10,11 +10,8 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 import Navigation from '../../components/navigation'
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import {FormControl} from "react-bootstrap";
 
-export default function NewProject(props) {
+export default function EditProject(props) {
   // form states
   const [projectName, setProjectName] = useState('');
   const [description, setDescription] = useState('');
@@ -97,7 +94,7 @@ export default function NewProject(props) {
           setCreatedProjectID(data.id);
         })
       }
-    }) 
+    })
     .catch((err) => {
       console.log(err);
     });
@@ -115,25 +112,13 @@ export default function NewProject(props) {
 
   return (
     <>
-      <Navbar bg="dark" variant="dark">
-    <Navbar.Brand href="#home">Project Manager</Navbar.Brand>
-    <Nav className="mr-auto">
-      <Nav.Link href="#home">Home</Nav.Link>
-      <Nav.Link href="#projects">Projects</Nav.Link>
-      <Nav.Link href="#pricing">Chat</Nav.Link>
-    </Nav>
-    <Form inline>
-      <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-      <Button variant="outline-info">Search</Button>
-    </Form>
-  </Navbar>
       {createdProjectID !== 0 && (
         <Redirect to={`/project/${createdProjectID}`} />
       )}
       <Helmet>
-        <title>New Project</title>
+        <title>Edit Project</title>
       </Helmet>
-      <Navigation pageTitle="New Project"/>
+      <Navigation pageTitle="Edit Project"/>
       <Container>
         <section>
           <Form className="pb-5" noValidate onSubmit={handleSubmit}>
@@ -212,7 +197,7 @@ export default function NewProject(props) {
                       <Col xs={8}>
                         {user.username} {(user.id === props.userId) ? "(you)" : ''}</Col>
                       <Col xs={4}>
-                        <Form.Check 
+                        <Form.Check
                           custom
                           type="checkbox"
                           id={user.id}
@@ -228,7 +213,7 @@ export default function NewProject(props) {
             </div>
             <div className="text-center">
               <Button variant="outline-primary" type="submit">
-                Create Project
+                Edit Project
               </Button>
             </div>
           </Form>
