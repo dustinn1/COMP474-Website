@@ -11,6 +11,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Form from "react-bootstrap/Form";
 import {FormControl} from "react-bootstrap";
+import {LinkContainer} from "react-router-bootstrap";
 
 export default function Homepage() {
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -20,12 +21,19 @@ export default function Homepage() {
 
   return (
     <>
-          <Navbar bg="dark" variant="dark">
+<Navbar bg="dark" variant="dark">
     <Navbar.Brand href="#home">Project Manager</Navbar.Brand>
     <Nav className="mr-auto">
-      <Nav.Link href="#home">Home</Nav.Link>
-      <Nav.Link href="#features">Projects</Nav.Link>
-      <Nav.Link href="#pricing">Chat</Nav.Link>
+        <LinkContainer to="/homepage">
+      <Nav.Link href = "">Home</Nav.Link>
+        </LinkContainer>
+        <LinkContainer to="/projects">
+      <Nav.Link href="">Projects</Nav.Link>
+        </LinkContainer>
+        <LinkContainer to="">
+          <Nav.Link href="#chat">Chat</Nav.Link>
+        </LinkContainer>
+
     </Nav>
     <Form inline>
       <FormControl type="text" placeholder="Search" className="mr-sm-2" />

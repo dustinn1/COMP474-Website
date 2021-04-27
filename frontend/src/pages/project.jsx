@@ -45,15 +45,16 @@ export default function Project() {
        <Navbar bg="dark" variant="dark">
     <Navbar.Brand href="#home">Project Manager</Navbar.Brand>
     <Nav className="mr-auto">
-        <LinkContainer to="/pages/homepage">
-      <Nav.Link href = "#home">Home</Nav.Link>
+        <LinkContainer to="/homepage">
+      <Nav.Link href = "">Home</Nav.Link>
         </LinkContainer>
-        <LinkContainer to="/projects/all">
-      <Nav.Link href="#projects">Projects</Nav.Link>
+        <LinkContainer to="/projects">
+      <Nav.Link href="">Projects</Nav.Link>
         </LinkContainer>
         <LinkContainer to="">
           <Nav.Link href="#chat">Chat</Nav.Link>
         </LinkContainer>
+
     </Nav>
     <Form inline>
       <FormControl type="text" placeholder="Search" className="mr-sm-2" />
