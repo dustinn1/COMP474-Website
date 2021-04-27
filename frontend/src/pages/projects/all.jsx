@@ -8,6 +8,10 @@ import Button from 'react-bootstrap/Button';
 import Navigation from '../../components/navigation'
 
 import './styles.css';
+import {FormControl, ProgressBar} from "react-bootstrap";
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
+import Form from "react-bootstrap/Form";
 
 export default function AllProjects(props) {
   const [projects, setProjects] = useState([]);
@@ -25,6 +29,18 @@ export default function AllProjects(props) {
 
   return (
     <div>
+      <Navbar bg="dark" variant="dark">
+    <Navbar.Brand href="#home">Project Manager</Navbar.Brand>
+    <Nav className="mr-auto">
+      <Nav.Link href="#home">Home</Nav.Link>
+      <Nav.Link href="#projects">Projects</Nav.Link>
+      <Nav.Link href="#pricing">Chat</Nav.Link>
+    </Nav>
+    <Form inline>
+      <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+      <Button variant="outline-info">Search</Button>
+    </Form>
+  </Navbar>
       <Helmet>
         <title>All Projects</title>
       </Helmet>
@@ -42,6 +58,11 @@ export default function AllProjects(props) {
                 return (
                   <LinkContainer to={`/project/${project.id}`} key={project.id}>
                     <Card className="project-card">
+                      <ProgressBar>
+                    <ProgressBar striped variant="success" now={35} key={1} />
+                    <ProgressBar variant="warning" now={20} key={2} />
+                    <ProgressBar striped variant="danger" now={10} key={3} />
+                    </ProgressBar>
                       <Card.Header as="h5">
                         {project.project_name}
                         <small>{project.visibility}</small>
@@ -58,6 +79,7 @@ export default function AllProjects(props) {
                         </Card.Text>
                       </Card.Body>
                     </Card>
+
                   </LinkContainer>
                 )
             })}
