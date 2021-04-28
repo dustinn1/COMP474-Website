@@ -29,7 +29,7 @@ export default function AllProjects(props) {
 
   return (
     <div>
-<Navbar bg="dark" variant="dark">
+          <Navbar bg="dark" variant="dark">
     <Navbar.Brand href="#home">Project Manager</Navbar.Brand>
     <Nav className="mr-auto">
         <LinkContainer to="/homepage">
@@ -38,7 +38,7 @@ export default function AllProjects(props) {
         <LinkContainer to="/projects">
       <Nav.Link href="">Projects</Nav.Link>
         </LinkContainer>
-        <LinkContainer to="">
+        <LinkContainer to="/chatapp">
           <Nav.Link href="#chat">Chat</Nav.Link>
         </LinkContainer>
 

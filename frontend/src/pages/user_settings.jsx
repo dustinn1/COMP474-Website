@@ -35,7 +35,7 @@ const handleLogout = (event) => {
   };
   return (
     <>
-<Navbar bg="dark" variant="dark">
+          <Navbar bg="dark" variant="dark">
     <Navbar.Brand href="#home">Project Manager</Navbar.Brand>
     <Nav className="mr-auto">
         <LinkContainer to="/homepage">
@@ -44,7 +44,7 @@ const handleLogout = (event) => {
         <LinkContainer to="/projects">
       <Nav.Link href="">Projects</Nav.Link>
         </LinkContainer>
-        <LinkContainer to="">
+        <LinkContainer to="/chatapp">
           <Nav.Link href="#chat">Chat</Nav.Link>
         </LinkContainer>
 

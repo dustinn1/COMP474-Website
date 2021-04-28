@@ -9,6 +9,7 @@ import NewProject from './pages/projects/new'
 import Project from './pages/project';
 import UserSettings from './pages/user_settings';
 import EditProject from './pages/projects/edit';
+import ChatApp from "./pages/chatapp";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -34,6 +35,7 @@ export default function App() {
       console.log(err);
     });
   }, []);
+
 
   function PrivateRoute({ children, ...rest }) {
     return (
@@ -80,6 +82,9 @@ export default function App() {
             </PrivateRoute>
                <PrivateRoute exact path="/edit">
               <EditProject/>
+            </PrivateRoute>
+               <PrivateRoute exact path="/chatapp">
+              <ChatApp/>
             </PrivateRoute>
           </Switch>
         )}

@@ -20,6 +20,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {LinkContainer} from "react-router-bootstrap";
+import ChatApp from "./chat";
 
 export default function Project() {
   const [project, setProject] = useState([]);
@@ -51,7 +52,7 @@ export default function Project() {
         <LinkContainer to="/projects">
       <Nav.Link href="">Projects</Nav.Link>
         </LinkContainer>
-        <LinkContainer to="">
+        <LinkContainer to="/chatapp">
           <Nav.Link href="#chat">Chat</Nav.Link>
         </LinkContainer>
 
