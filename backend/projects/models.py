@@ -14,6 +14,13 @@ class Project(models.Model):
     def __str__(self):
         return self.project_name
 
+class Tag(models.Model):
+    name = models.CharField(max_length=10)
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="tags")
+
+    def __str__(self):
+        return self.name
+
 class Document(models.Model):
     file = models.FileField(blank=False, null=False)
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)

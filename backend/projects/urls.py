@@ -10,6 +10,7 @@ urlpatterns = [
     path('projects/', views.projects_all),
     path('projects/<user>', views.projects_user),
     path('project/<pk>/', views.project_individual),
+    path('project/<project_id>/tags', views.project_tags),
 
     path('documents/', views.documents_all),
     path('document/<pk>/', views.document_individual),
