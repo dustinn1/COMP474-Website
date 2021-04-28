@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { Helmet } from 'react-helmet';
 import Container from 'react-bootstrap/Container';
@@ -98,6 +98,9 @@ export default function EditDocuments(props) {
       <Navigation pageTitle="Edit Documents"/>
       <Container>
         <section>
+          <Link to={`/project/${id}`}>
+            Go Back
+          </Link> <br /><br />
           <h3>All Documents</h3>
           <ListGroup variant="flush">
             <ListGroup.Item style={{borderBottom: '1.5px solid #000'}}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router';
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { Helmet } from 'react-helmet';
 import Container from 'react-bootstrap/Container';
@@ -98,6 +98,9 @@ export default function EditMembers(props) {
       <Navigation pageTitle="Edit Project"/>
       <Container>
         <section>
+          <Link to={`/project/${id}`}>
+            Go Back
+          </Link> <br /><br />
           <Form className="pb-5" noValidate onSubmit={handleSubmit}>
             <div className="project-user-list mb-4">
               <div className="project-user-list-header">

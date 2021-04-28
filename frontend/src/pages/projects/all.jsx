@@ -6,19 +6,24 @@ import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Badge from "react-bootstrap/Badge";
+import Spinner from "react-bootstrap/Spinner";
 import './styles.css';
 
 import Navigation from '../../components/navigation'
 
 export default function AllProjects(props) {
   const [projects, setProjects] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:8000/api/projects/${props.userId}`, {
       headers: {'Content-Type': 'application/json'},
     })
     .then((res) => res.json())
-    .then((json) => setProjects(json))
+    .then((json) => {
+      setProjects(json);
+      setLoaded(true);
+    })
     .catch((err) => {
       console.log(err);
     });
@@ -38,8 +43,13 @@ export default function AllProjects(props) {
             </LinkContainer>
           </div>
           <div className="d-flex flex-wrap justify-content-center flex-grow-0">
-            {projects
-              .map((project) => {
+            {!loaded && (
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            )}
+            {loaded && 
+              projects.map((project) => {
                 return (
                   <LinkContainer to={`/project/${project.id}`} key={project.id}>
                     <Card className="project-card">

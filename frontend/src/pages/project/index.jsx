@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { LinkContainer } from "react-router-bootstrap";
 import Container from "react-bootstrap/Container";
@@ -63,6 +63,9 @@ export default function Project() {
       />
       <Container>
         <section>
+          <Link to={'/projects'}>
+            Go Back
+          </Link>
           <Card className="mt-3">
             <Tab.Container defaultActiveKey="details">
               <Card.Header>
@@ -103,11 +106,6 @@ export default function Project() {
                     <hr />
                     <p>Project Name: {project.project_name}</p>
                     <p>Description: {project.description}</p>
-                    Tags: {project.tags && project.tags.map((tag) => {
-                      return (
-                        <Badge variant="primary" key={tag.id} className="mr-1">{tag.name}</Badge>
-                      )
-                    })} <br /><br />
                     <p style={{textTransform: 'capitalize'}}>Visiblity: {project.visibility}</p>
                     <p>{dayjs(project.date_started).format('MMM DD, YYYY')} to {dayjs(project.date_ended).format('MMM DD, YYYY')}</p>
                   </Tab.Pane>

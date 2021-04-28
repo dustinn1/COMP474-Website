@@ -1,7 +1,7 @@
 import React from "react";
 import ChatApp from "./chat";
 import Navigation from '../components/navigation';
-import { Card } from "react-bootstrap";
+import { Card, Container } from "react-bootstrap";
 class chatapp extends React.Component {
   constructor(props) {
     super(props);
@@ -31,26 +31,28 @@ class chatapp extends React.Component {
     return (
       <>
         <Navigation />
-        <p></p>
-        <Card>
-          <form
-            onSubmit={this.usernameSubmitHandler}
-            className="username-container"
-          >
-            <h2>Project Manager Instant Chat</h2>
-            <p>Enter Username of a member you would like to chat with</p>
-            <p></p>
-            <div>
-              <input
-                type="text"
-                onChange={this.usernameChangeHandler}
-                placeholder="Enter username"
-                required
-              />
-            </div>
-            <input type="submit" value="Submit" />
-          </form>
-        </Card>
+        <Container>
+          <p></p>
+          <Card>
+            <form
+              onSubmit={this.usernameSubmitHandler}
+              className="username-container"
+            >
+              <h2>Project Manager Instant Chat</h2>
+              <p>Enter Username of a member you would like to chat with</p>
+              <p></p>
+              <div>
+                <input
+                  type="text"
+                  onChange={this.usernameChangeHandler}
+                  placeholder="Enter username"
+                  required
+                />
+              </div>
+              <input type="submit" value="Submit" />
+            </form>
+          </Card>
+        </Container>
       </>
     );
   }

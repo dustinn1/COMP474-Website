@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router';
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { Helmet } from 'react-helmet';
 import dayjs from 'dayjs';
@@ -167,6 +167,9 @@ export default function EditProject() {
       <Navigation pageTitle="Edit Project"/>
       <Container>
         <section>
+          <Link to={`/project/${id}`}>
+            Go Back
+          </Link> <br /><br />
           <Form className="pb-5" noValidate onSubmit={handleSubmit}>
             <Form.Group as={Row} controlId="formProjectName">
               <Form.Label column sm="2">

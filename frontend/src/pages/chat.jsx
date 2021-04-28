@@ -50,7 +50,7 @@ class chat extends React.Component {
     return (
       <>
         <Navigation />
-        <div className="container">
+        <div className="chat-app container">
           <h3>You are chatting with John_Doe!</h3>
           <Messages messages={this.state.messages} />
           <ChatInput onSend={this.sendHandler} />

@@ -8,6 +8,8 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "react-bootstrap/Card";
 import Cookies from "js-cookie";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 export default function UserSettings() {
   const handleLogout = (event) => {
@@ -35,22 +37,28 @@ export default function UserSettings() {
       <Navigation pageTitle="User Settings" />
       <Container>
         <section>
-          <FontAwesomeIcon
-            icon={faUserCircle}
-            size="8x"
-            style={{ color: "orange" }}
-          />
+          <Row>
+            <Col md={2}>
+              <FontAwesomeIcon
+                icon={faUserCircle}
+                size="8x"
+                style={{ color: "orange" }}
+              />
+            </Col>
+            <Col md={10}>
+              <Card>
+                <Card.Header as="h5">NewUser</Card.Header>
+                <Card.Body>
+                  <Card.Title>Projects</Card.Title>
+                  <Card.Text>SE Project</Card.Text>
+                  <Button onClick={handleLogout} variant="info">
+                    Logout
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
         </section>
-        <Card>
-          <Card.Header as="h5">NewUser</Card.Header>
-          <Card.Body>
-            <Card.Title>Projects</Card.Title>
-            <Card.Text>SE Project</Card.Text>
-            <Button onClick={handleLogout} variant="info">
-              Logout
-            </Button>
-          </Card.Body>
-        </Card>
       </Container>
     </>
   );
