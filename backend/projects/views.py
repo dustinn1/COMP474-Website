@@ -57,11 +57,11 @@ def projects_user(request, user):
       status=404
     ) 
   if request.method == 'GET':
-    serializer = ProjectSerializer(project, many=True)
+    serializer = ProjectSerializerRead(project, many=True)
     return Response(serializer.data)
 
 # Get a specific project, Modify a specific project, or Delete a specific project
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PATCH', 'DELETE'])
 def project_individual(request, pk):
   try: 
       project = Project.objects.get(pk=pk) 
@@ -71,9 +71,9 @@ def project_individual(request, pk):
       status=404
     ) 
   if request.method == 'GET':
-    serializer = ProjectSerializer(project)
+    serializer = ProjectSerializerRead(project)
     return Response(serializer.data)
-  elif request.method == 'PUT':
+  elif request.method == 'PATCH':
     serializer = ProjectSerializer(project, data=request.data)
     if serializer.is_valid():
       serializer.save()

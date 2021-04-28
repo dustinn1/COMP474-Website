@@ -99,7 +99,7 @@ export default function Project() {
                         <h3>Project Details</h3>
                       </Col>
                       <Col md={2}>
-                        <LinkContainer to={`/project/${id}/edit`}>
+                        <LinkContainer to={`/project/${id}/edit/details`}>
                           <Button variant="outline-primary" block>Edit Details</Button>
                         </LinkContainer>
                       </Col>
@@ -127,7 +127,9 @@ export default function Project() {
                         <h3>Members</h3>
                       </Col>
                       <Col md={2}>
-                        <Button variant="outline-primary" block>Edit Members</Button>
+                        <LinkContainer to={`/project/${id}/edit/members`}>
+                          <Button variant="outline-primary" block>Edit Members</Button>
+                        </LinkContainer>
                       </Col>
                     </Row>
                     <hr />

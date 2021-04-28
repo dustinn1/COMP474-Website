@@ -7,7 +7,8 @@ import Login from './pages/login';
 import AllProjects from './pages/projects/all';
 import NewProject from './pages/projects/new'
 import Project from './pages/project';
-import ProjectEdit from './pages/project/edit';
+import ProjectEditDetails from './pages/project/edit';
+import ProjectEditMembers from './pages/project/members';
 import UserSettings from './pages/user_settings';
 
 export default function App() {
@@ -72,8 +73,11 @@ export default function App() {
             <PrivateRoute exact path="/project/:id">
               <Project />
             </PrivateRoute>
-            <PrivateRoute exact path="/project/:id/edit">
-              <ProjectEdit />
+            <PrivateRoute exact path="/project/:id/edit/details">
+              <ProjectEditDetails />
+            </PrivateRoute>
+            <PrivateRoute exact path="/project/:id/edit/members">
+              <ProjectEditMembers userId={userId} />
             </PrivateRoute>
             <PrivateRoute exact path="/user/settings">
               <UserSettings />
