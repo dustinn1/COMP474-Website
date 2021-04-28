@@ -10,11 +10,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
-import Navigation from '../../components/navigation'
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import {LinkContainer} from "react-router-bootstrap";
-import {FormControl} from "react-bootstrap";
+import Navigation from '../../components/navigation';
 
 export default function EditProject() {
   // form states
@@ -111,26 +107,6 @@ export default function EditProject() {
       {updated && (
         <Redirect to={`/project/${id}`} />
       )}
-
-          <Navbar bg="dark" variant="dark">
-    <Navbar.Brand href="#home">Project Manager</Navbar.Brand>
-    <Nav className="mr-auto">
-        <LinkContainer to="/homepage">
-      <Nav.Link href = "">Home</Nav.Link>
-        </LinkContainer>
-        <LinkContainer to="/projects">
-      <Nav.Link href="">Projects</Nav.Link>
-        </LinkContainer>
-        <LinkContainer to="/chatapp">
-          <Nav.Link href="#chat">Chat</Nav.Link>
-        </LinkContainer>
-
-    </Nav>
-    <Form inline>
-      <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-      <Button variant="outline-info">Search</Button>
-    </Form>
-  </Navbar>
       <Helmet>
         <title>Edit Project</title>
       </Helmet>

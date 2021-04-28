@@ -3,17 +3,11 @@ import { Helmet } from 'react-helmet';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
-
-
 import LoginModal from '../components/accountModals/login';
 import RegisterModal from '../components/accountModals/register';
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import Form from "react-bootstrap/Form";
-import {CardGroup, FormControl} from "react-bootstrap";
-import {LinkContainer} from "react-router-bootstrap";
+import {CardGroup} from "react-bootstrap";
 import Card from "react-bootstrap/Card";
-import {faTasks, faUserCircle} from "@fortawesome/free-solid-svg-icons";
+import {faTasks} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChartLine} from "@fortawesome/free-solid-svg-icons/faChartLine";
 import {faSmile} from "@fortawesome/free-solid-svg-icons/faSmile";
@@ -26,27 +20,7 @@ export default function Homepage() {
 
   return (
     <>
-          <Navbar bg="dark" variant="dark">
-    <Navbar.Brand href="#home">Project Manager</Navbar.Brand>
-    <Nav className="mr-auto">
-        <LinkContainer to="/homepage">
-      <Nav.Link href = "">Home</Nav.Link>
-        </LinkContainer>
-        <LinkContainer to="/projects">
-      <Nav.Link href="">Projects</Nav.Link>
-        </LinkContainer>
-        <LinkContainer to="/chatapp">
-          <Nav.Link href="#chat">Chat</Nav.Link>
-        </LinkContainer>
-
-    </Nav>
-    <Form inline>
-      <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-      <Button variant="outline-info">Search</Button>
-    </Form>
-  </Navbar>
-  <br />
-        <Helmet>
+      <Helmet>
         <title>Home</title>
       </Helmet>
       <Jumbotron fluid>

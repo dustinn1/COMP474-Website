@@ -11,7 +11,7 @@ import ProjectEditDetails from './pages/project/edit';
 import ProjectEditMembers from './pages/project/members';
 import ProjectEditDocuments from './pages/project/documents';
 import UserSettings from './pages/user_settings';
-import EditProject from './pages/projects/edit';
+import EditProject from './pages/project/edit';
 import ChatApp from "./pages/chatapp";
 
 export default function App() {
@@ -89,13 +89,13 @@ export default function App() {
             <PrivateRoute exact path="/user/settings">
               <UserSettings />
             </PrivateRoute>
-               <PrivateRoute exact path="/homepage">
+            <PrivateRoute exact path="/homepage">
               <Homepage />
             </PrivateRoute>
-               <PrivateRoute exact path="/edit">
+            <PrivateRoute exact path="/edit">
               <EditProject/>
             </PrivateRoute>
-               <PrivateRoute exact path="/chatapp">
+            <PrivateRoute exact path="/chatapp">
               <ChatApp/>
             </PrivateRoute>
           </Switch>

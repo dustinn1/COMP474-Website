@@ -5,10 +5,6 @@ import dayjs from 'dayjs';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import FormControl from "react-bootstrap/FormControl";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import Form from "react-bootstrap/Form";
 import Badge from "react-bootstrap/Badge";
 import './styles.css';
 
@@ -29,26 +25,7 @@ export default function AllProjects(props) {
   }, [props.userId])
 
   return (
-    <div>
-          <Navbar bg="dark" variant="dark">
-    <Navbar.Brand href="#home">Project Manager</Navbar.Brand>
-    <Nav className="mr-auto">
-        <LinkContainer to="/homepage">
-      <Nav.Link href = "">Home</Nav.Link>
-        </LinkContainer>
-        <LinkContainer to="/projects">
-      <Nav.Link href="">Projects</Nav.Link>
-        </LinkContainer>
-        <LinkContainer to="/chatapp">
-          <Nav.Link href="#chat">Chat</Nav.Link>
-        </LinkContainer>
-
-    </Nav>
-    <Form inline>
-      <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-      <Button variant="outline-info">Search</Button>
-    </Form>
-  </Navbar>
+    <>
       <Helmet>
         <title>All Projects</title>
       </Helmet>
@@ -89,6 +66,6 @@ export default function AllProjects(props) {
           </div>
         </section>
       </Container>
-    </div>
+    </>
   )
 }

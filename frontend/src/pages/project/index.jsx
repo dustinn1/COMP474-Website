@@ -4,10 +4,7 @@ import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { LinkContainer } from "react-router-bootstrap";
 import Container from "react-bootstrap/Container";
-import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import Form from "react-bootstrap/Form";
-import FormControl from "react-bootstrap/FormControl";
 import ListGroup from "react-bootstrap/ListGroup";
 import Tab from "react-bootstrap/Tab";
 import Button from "react-bootstrap/Button";
@@ -58,24 +55,6 @@ export default function Project() {
 
   return (
     <>
-      <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="#home">Project Manager</Navbar.Brand>
-        <Nav className="mr-auto">
-          <LinkContainer to="/pages/homepage">
-            <Nav.Link href="#home">Home</Nav.Link>
-          </LinkContainer>
-          <LinkContainer to="/projects/all">
-            <Nav.Link href="#projects">Projects</Nav.Link>
-          </LinkContainer>
-          <LinkContainer to="">
-            <Nav.Link href="#chat">Chat</Nav.Link>
-          </LinkContainer>
-        </Nav>
-        <Form inline>
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-          <Button variant="outline-info">Search</Button>
-        </Form>
-      </Navbar>
       <Helmet>
         <title>{project.project_name}</title>
       </Helmet>
