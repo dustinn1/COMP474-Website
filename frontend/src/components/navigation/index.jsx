@@ -29,14 +29,19 @@ export default function Navigation(props) {
   };
 
   return (
-    <Navbar collapseOnSelect expand="xl" bg="primary" variant="dark">
-      <Container>
-        <LinkContainer exact to="/">
-          <Navbar.Brand>{props.pageTitle}</Navbar.Brand>
-        </LinkContainer>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
+    <>
+      <Navbar bg="dark" variant="dark">
+        <Container>
+          <LinkContainer exact to="/">
+            <Navbar.Brand>Project Manager</Navbar.Brand>
+          </LinkContainer>
           <Nav className="mr-auto">
+            <LinkContainer to="/projects">
+              <Nav.Link>Projects</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/chatapp">
+              <Nav.Link>Chat</Nav.Link>
+            </LinkContainer>
           </Nav>
           <Nav>
             <NavDropdown title="Account" id="basic-nav-dropdown">
@@ -52,8 +57,15 @@ export default function Navigation(props) {
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+        </Container>
+      </Navbar>
+      <Navbar collapseOnSelect expand="xl" bg="primary" variant="dark">
+        <Container style={{flexDirection: 'column'}}>
+          <LinkContainer exact to="/">
+            <Navbar.Brand>{props.pageTitle}</Navbar.Brand>
+          </LinkContainer>
+        </Container>
+      </Navbar>
+    </>
   )
 }
