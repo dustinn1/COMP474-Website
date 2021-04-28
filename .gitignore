@@ -4,6 +4,8 @@
 
 db.sqlite3
 
+documents/
+
 # Environments
 .env
 .venv

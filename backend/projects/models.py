@@ -8,18 +8,26 @@ class Project(models.Model):
     date_started = models.DateField()
     date_ended = models.DateField()
     
-    users = models.ManyToManyField(get_user_model(), related_name="users", blank=True)
+    users = models.ManyToManyField(get_user_model(), related_name="users")
     managers = models.ManyToManyField(get_user_model(), related_name="managers", blank=True)
 
     def __str__(self):
         return self.project_name
 
+class Tag(models.Model):
+    name = models.CharField(max_length=10)
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="tags")
+
+    def __str__(self):
+        return self.name
+
 class Document(models.Model):
+    file = models.FileField(blank=False, null=False)
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=255)
     added_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    date_added = models.DateField()
+    date_added = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.title

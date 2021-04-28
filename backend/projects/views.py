@@ -3,11 +3,13 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.db.models import Q
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.views import APIView
 
 from django.contrib.auth.models import User
-from .models import Project, Document
+from .models import Project, Document, Tag
 
-from .serializers import UserSerializer, ProjectSerializer, ProjectSerializerRead, DocumentSerializer
+from .serializers import UserSerializer, ProjectSerializer, ProjectSerializerRead, TagSerializer, DocumentSerializerRead, DocumentSerializer
 
 # Get all users
 @api_view(['GET'])
@@ -57,11 +59,11 @@ def projects_user(request, user):
       status=404
     ) 
   if request.method == 'GET':
-    serializer = ProjectSerializer(project, many=True)
+    serializer = ProjectSerializerRead(project, many=True)
     return Response(serializer.data)
 
 # Get a specific project, Modify a specific project, or Delete a specific project
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PATCH', 'DELETE'])
 def project_individual(request, pk):
   try: 
       project = Project.objects.get(pk=pk) 
@@ -71,9 +73,9 @@ def project_individual(request, pk):
       status=404
     ) 
   if request.method == 'GET':
-    serializer = ProjectSerializer(project)
+    serializer = ProjectSerializerRead(project)
     return Response(serializer.data)
-  elif request.method == 'PUT':
+  elif request.method == 'PATCH':
     serializer = ProjectSerializer(project, data=request.data)
     if serializer.is_valid():
       serializer.save()
@@ -87,14 +89,29 @@ def project_individual(request, pk):
     )
 
 
+# Get a tags of a project
+@api_view(['GET'])
+def project_tags(request, project_id):
+  try: 
+      tags = Tag.objects.filter(project_id=project_id) 
+  except Tag.DoesNotExist: 
+    return Response(
+      {'message': 'This project does not have tags'}, 
+      status=404
+    ) 
+  if request.method == 'GET':
+    serializer = TagSerializer(tags, many=True)
+    return Response(serializer.data)
+
+
 @api_view(['GET'])
 def documents_all(request):
   if request.method == 'GET':
     documents = Document.objects.all()
-    serializer = DocumentSerializer(documents, many=True)
+    serializer = DocumentSerializerRead(documents, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
+@api_view(['GET', 'DELETE'])
 def document_individual(request, pk):
   try: 
       document = Document.objects.get(pk=pk) 
@@ -104,5 +121,34 @@ def document_individual(request, pk):
       status=404
     ) 
   if request.method == 'GET':
-    serializer = DocumentSerializer(document)
+    serializer = DocumentSerializerRead(document)
     return Response(serializer.data)
+  elif request.method == 'DELETE':
+    document.delete()
+    return Response(
+      {'message': 'This project has been deleted'}, 
+      status=204
+    )
+
+@api_view(['GET'])
+def documents_project(request, project_id):
+  try: 
+      document = Document.objects.filter(project_id=project_id) 
+  except Document.DoesNotExist: 
+    return Response(
+      {'message': 'This project has no documents'}, 
+      status=404
+    ) 
+  if request.method == 'GET':
+    serializer = DocumentSerializerRead(document, many=True)
+    return Response(serializer.data)
+
+class DocumentUpload(APIView):
+		parser_classes = (MultiPartParser, FormParser)
+		def post(self, request, *args, **kwargs):
+				serializer = DocumentSerializer(data=request.data)
+				if serializer.is_valid():
+						serializer.save()
+						return Response(serializer.data, status=201)
+				else:
+						return Response(serializer.errors, status=400)

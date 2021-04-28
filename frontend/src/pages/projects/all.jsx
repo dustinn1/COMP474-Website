@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet';
 import { LinkContainer } from 'react-router-bootstrap';
+import dayjs from 'dayjs';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-
-import Navigation from '../../components/navigation'
-
-import './styles.css';
-import {FormControl, ProgressBar} from "react-bootstrap";
+import FormControl from "react-bootstrap/FormControl";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Form from "react-bootstrap/Form";
+import Badge from "react-bootstrap/Badge";
+import './styles.css';
+
+import Navigation from '../../components/navigation'
 
 export default function AllProjects(props) {
   const [projects, setProjects] = useState([]);
@@ -59,17 +60,12 @@ export default function AllProjects(props) {
               <Button variant="outline-success" className="align-self-end">New Project</Button>
             </LinkContainer>
           </div>
-          <div className="d-flex flex-wrap justify-content-center">
+          <div className="d-flex flex-wrap justify-content-center flex-grow-0">
             {projects
               .map((project) => {
                 return (
                   <LinkContainer to={`/project/${project.id}`} key={project.id}>
                     <Card className="project-card">
-                      <ProgressBar>
-                    <ProgressBar striped variant="success" now={35} key={1} />
-                    <ProgressBar variant="warning" now={20} key={2} />
-                    <ProgressBar striped variant="danger" now={10} key={3} />
-                    </ProgressBar>
                       <Card.Header as="h5">
                         {project.project_name}
                         <small>{project.visibility}</small>
@@ -77,12 +73,12 @@ export default function AllProjects(props) {
                       <Card.Body>
                         <Card.Text>
                           {project.description}<br /><br />
-                          {/* project.tags.map((tag) => {
+                          {dayjs(project.date_started).format('MMM DD, YYYY')} to {dayjs(project.date_ended).format('MMM DD, YYYY')} <br /><br />
+                          {project.tags.map((tag) => {
                             return (
-                              <Badge variant="primary">{tag}</Badge>
+                              <Badge variant="primary" key={tag.id}>{tag.name}</Badge>
                             )
-                          })*/}<br /><br />
-                          {project.date_started} to {project.date_ended}
+                          })}
                         </Card.Text>
                       </Card.Body>
                     </Card>

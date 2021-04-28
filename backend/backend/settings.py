@@ -147,3 +147,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 CORS_ALLOW_CREDENTIALS = True
+
+MEDIA_URL = '../frontend/public/documents/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "../frontend/public/documents")
