@@ -74,7 +74,7 @@ class chat extends React.Component {
     </Form>
   </Navbar>
       <div className="container">
-        <h3>You are chatting with Bob!</h3>
+        <h3>You are chatting with John_Doe!</h3>
         <Messages messages={this.state.messages} />
         <ChatInput onSend={this.sendHandler} />
       </div>

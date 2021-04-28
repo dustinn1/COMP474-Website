@@ -60,17 +60,21 @@ class chatapp extends React.Component {
     </Form>
    </Container>
   </Navbar>
+            <p></p>
      <card>
       <form onSubmit={this.usernameSubmitHandler} className="username-container">
-        <p>Project Manager Instant Chat</p>
+        <h2>Project Manager Instant Chat</h2>
+          <p>Enter Username of a member you would like to chat with</p>
+          <p></p>
         <div>
           <input
             type="text"
             onChange={this.usernameChangeHandler}
-            placeholder="Enter a username of a member"
+            placeholder="Enter username"
             required />
         </div>
         <input type="submit" value="Submit" />
+
       </form>
        </card>
 
