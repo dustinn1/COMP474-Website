@@ -32,7 +32,9 @@ export default function Navigation(props) {
     <>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="/">Project Manager</Navbar.Brand>
+          <LinkContainer exact to="/">
+            <Navbar.Brand>Project Manager</Navbar.Brand>
+          </LinkContainer>
           <Nav className="mr-auto">
             <LinkContainer to="/projects">
               <Nav.Link>Projects</Nav.Link>
