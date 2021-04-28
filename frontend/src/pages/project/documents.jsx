@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect } from 'react-router';
 import { useParams } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { Helmet } from 'react-helmet';
@@ -9,20 +8,26 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { faPencilAlt, faTrashAlt, faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
+import Toast from 'react-bootstrap/Toast';
+import { faTrashAlt, faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import bsCustomFileInput from 'bs-custom-file-input';
 
-import Navigation from '../../components/navigation'
+import Navigation from '../../components/navigation';
+import DeleteModal from '../../components/projectModals/delete';
 
 export default function EditDocuments(props) {
   const [file, setFile] = useState();
   const [documentTitle, setDocumentTitle] = useState('');
   const [description, setDescription] = useState('');
   const [errors, setErrors] = useState([]);
-  const [updated, setUpdated] = useState(false);
-
   const [documents, setDocuments] = useState([]);
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(0);
+  const [deleteTitle, setDeleteTitle] = useState('');
+  const [documentUpdate, setDocumentUpdate] = useState(0);
+  const [showDeleteToast, setShowDeleteToast] = useState(false);
 
   let { id } = useParams();
   
@@ -38,7 +43,7 @@ export default function EditDocuments(props) {
     .catch((err) => {
       console.log(err);
     });
-  }, [id])
+  }, [id, documentUpdate])
 
   const handleDocumentTitle = (event) => {
     setDocumentTitle(event.target.value);
@@ -60,7 +65,7 @@ export default function EditDocuments(props) {
 		formData.append('title', documentTitle);
 		formData.append('description', description);
 		formData.append('added_by', props.userId);
-    fetch(`http://localhost:8000/api/upload_documents/`, {
+    fetch('http://localhost:8000/api/upload_documents/', {
       method: "POST",
       headers: {
         "X-CSRFToken": Cookies.get('csrftoken'),
@@ -77,7 +82,7 @@ export default function EditDocuments(props) {
           setErrors(errors => ({...errors, file: (data.file) ? "Please upload a valid file." : ''}));
         })
       } else {
-        setUpdated(true);
+        setDocumentUpdate(documentUpdate + 1);
       }
     })
     .catch((err) => {
@@ -87,9 +92,6 @@ export default function EditDocuments(props) {
 
   return (
     <>
-      {updated && (
-        <Redirect to={`/project/${id}`} />
-      )}
       <Helmet>
         <title>Edit Documents</title>
       </Helmet>
@@ -100,8 +102,8 @@ export default function EditDocuments(props) {
           <ListGroup variant="flush">
             <ListGroup.Item style={{borderBottom: '1.5px solid #000'}}>
               <Row className="text-center">
-                <Col md={8}><strong>Document Info</strong></Col>
-                <Col md={4}><strong>Actions</strong></Col>
+                <Col md={10}><strong>Document Info</strong></Col>
+                <Col md={2}><strong>Action</strong></Col>
               </Row>
             </ListGroup.Item>
             {(
@@ -110,7 +112,7 @@ export default function EditDocuments(props) {
                 return (
                   <ListGroup.Item key={document.id}>
                     <Row>
-                      <Col md={8}>
+                      <Col md={10}>
                         <a href={`/documents/${file_path}`} target="_blank" rel="noreferrer">
                           <strong>{document.title}</strong>  <FontAwesomeIcon icon={faExternalLinkAlt} /> 
                         </a> <br />
@@ -119,13 +121,15 @@ export default function EditDocuments(props) {
                         Added on: {document.date_added}
                       </Col>
                       <Col md={2}>
-                        <Button variant="success" id={`${document.id}-edit`}>
-                          <FontAwesomeIcon icon={faPencilAlt} />
-                          Edit
-                        </Button>
-                      </Col>
-                      <Col md={2}>
-                        <Button variant="danger" id={`${document.id}-delete`}>
+                        <Button 
+                          variant="danger" 
+                          block
+                          onClick={() => {
+                            setDeleteTitle(document.title);
+                            setDeleteId(document.id); 
+                            setShowDeleteModal(true);
+                          }}
+                        >
                           <FontAwesomeIcon icon={faTrashAlt} />
                           Delete
                         </Button>
@@ -183,7 +187,34 @@ export default function EditDocuments(props) {
               </Button>
             </div>
           </Form>
+          <Toast 
+            onClose={() => setShowDeleteToast(false)} 
+            show={showDeleteToast} 
+            delay={5000} 
+            autohide
+            style={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+            }}
+          >
+            <Toast.Header>
+              <strong className="mr-auto">Delete</strong>
+            </Toast.Header>
+            <Toast.Body>{deleteTitle} has been deleted.</Toast.Body>
+          </Toast>
         </section>
+        <DeleteModal 
+          show={showDeleteModal} 
+          onHide={() => setShowDeleteModal(false)}
+          deleteTitle={deleteTitle}
+          deleteId={deleteId}
+          onDelete={() => {
+            setShowDeleteModal(false);
+            setShowDeleteToast(true);
+            setDocumentUpdate(documentUpdate + 1);
+          }}
+        />
       </Container>
     </>
   )

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
+import dayjs from "dayjs";
 import { LinkContainer } from "react-router-bootstrap";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
@@ -124,7 +125,7 @@ export default function Project() {
                     <p>Project Name: {project.project_name}</p>
                     <p>Description: {project.description}</p>
                     <p style={{textTransform: 'capitalize'}}>Visiblity: {project.visibility}</p>
-                    <p>{project.date_started} - {project.date_ended}</p>
+                    <p>{dayjs(project.date_started).format('MMM DD, YYYY')} to {dayjs(project.date_ended).format('MMM DD, YYYY')}</p>
                   </Tab.Pane>
                   <Tab.Pane eventKey="documents">
                     <Row>

@@ -41,7 +41,7 @@ export default function EditProject() {
     .catch((err) => {
       console.log(err);
     });
-  }, [id, ])
+  }, [id])
 
   const handleProjectName = (event) => {
     setProjectName(event.target.value);
