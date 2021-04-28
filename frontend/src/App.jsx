@@ -11,6 +11,8 @@ import ProjectEditDetails from './pages/project/edit';
 import ProjectEditMembers from './pages/project/members';
 import ProjectEditDocuments from './pages/project/documents';
 import UserSettings from './pages/user_settings';
+import EditProject from './pages/project/edit';
+import ChatApp from "./pages/chatapp";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -36,6 +38,7 @@ export default function App() {
       console.log(err);
     });
   }, []);
+
 
   function PrivateRoute({ children, ...rest }) {
     return (
@@ -85,6 +88,15 @@ export default function App() {
             </PrivateRoute>
             <PrivateRoute exact path="/user/settings">
               <UserSettings />
+            </PrivateRoute>
+            <PrivateRoute exact path="/homepage">
+              <Homepage />
+            </PrivateRoute>
+            <PrivateRoute exact path="/edit">
+              <EditProject/>
+            </PrivateRoute>
+            <PrivateRoute exact path="/chatapp">
+              <ChatApp/>
             </PrivateRoute>
           </Switch>
         )}

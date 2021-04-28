@@ -130,18 +130,6 @@ export default function NewProject(props) {
 
   return (
     <>
-      <Navbar bg="dark" variant="dark">
-    <Navbar.Brand href="#home">Project Manager</Navbar.Brand>
-    <Nav className="mr-auto">
-      <Nav.Link href="#home">Home</Nav.Link>
-      <Nav.Link href="#projects">Projects</Nav.Link>
-      <Nav.Link href="#pricing">Chat</Nav.Link>
-    </Nav>
-    <Form inline>
-      <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-      <Button variant="outline-info">Search</Button>
-    </Form>
-  </Navbar>
       {createdProjectID !== 0 && (
         <Redirect to={`/project/${createdProjectID}`} />
       )}

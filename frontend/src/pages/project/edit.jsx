@@ -13,7 +13,7 @@ import Modal from 'react-bootstrap/Modal';
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 
-import Navigation from '../../components/navigation'
+import Navigation from '../../components/navigation';
 
 export default function EditProject() {
   // form states
