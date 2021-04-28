@@ -24,6 +24,8 @@ export default function Project() {
   const [documentsLength, setDocumentsLength] = useState(0);
   let { id } = useParams();
 
+
+
   useEffect(() => {
     fetch(`http://localhost:8000/api/project/${id}/`, {
       credentials: "include",

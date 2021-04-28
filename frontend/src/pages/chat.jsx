@@ -51,7 +51,7 @@ class chat extends React.Component {
       <>
         <Navigation />
         <div className="container">
-          <h3>You are chatting with John_Doe!</h3>
+          <h3>Type any message to start the chat!</h3>
           <Messages messages={this.state.messages} />
           <ChatInput onSend={this.sendHandler} />
         </div>
