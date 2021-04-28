@@ -82,6 +82,9 @@ export default function EditDocuments(props) {
           setErrors(errors => ({...errors, file: (data.file) ? "Please upload a valid file." : ''}));
         })
       } else {
+        setDocumentTitle('')
+        setDescription('')
+        setFile();
         setDocumentUpdate(documentUpdate + 1);
       }
     })
