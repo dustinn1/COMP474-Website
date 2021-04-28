@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Navigation from '../../components/navigation'
 
 import './styles.css';
-import {FormControl, ProgressBar} from "react-bootstrap";
+import FormControl from "react-bootstrap/FormControl";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Form from "react-bootstrap/Form";
@@ -58,11 +58,6 @@ export default function AllProjects(props) {
                 return (
                   <LinkContainer to={`/project/${project.id}`} key={project.id}>
                     <Card className="project-card">
-                      <ProgressBar>
-                    <ProgressBar striped variant="success" now={35} key={1} />
-                    <ProgressBar variant="warning" now={20} key={2} />
-                    <ProgressBar striped variant="danger" now={10} key={3} />
-                    </ProgressBar>
                       <Card.Header as="h5">
                         {project.project_name}
                         <small>{project.visibility}</small>

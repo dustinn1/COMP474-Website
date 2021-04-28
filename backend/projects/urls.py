@@ -1,4 +1,5 @@
 from django.urls import path
+from django.conf.urls import url
 
 from . import views
 
@@ -11,5 +12,7 @@ urlpatterns = [
     path('project/<pk>/', views.project_individual),
 
     path('documents/', views.documents_all),
-    path('document/<pk>/', views.document_individual)
+    path('document/<pk>/', views.document_individual),
+    path('documents/<project_id>/', views.documents_project),
+    path('upload_documents/', views.DocumentUpload.as_view())
 ]

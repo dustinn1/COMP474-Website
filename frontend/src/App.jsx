@@ -9,6 +9,7 @@ import NewProject from './pages/projects/new'
 import Project from './pages/project';
 import ProjectEditDetails from './pages/project/edit';
 import ProjectEditMembers from './pages/project/members';
+import ProjectEditDocuments from './pages/project/documents';
 import UserSettings from './pages/user_settings';
 
 export default function App() {
@@ -78,6 +79,9 @@ export default function App() {
             </PrivateRoute>
             <PrivateRoute exact path="/project/:id/edit/members">
               <ProjectEditMembers userId={userId} />
+            </PrivateRoute>
+            <PrivateRoute exact path="/project/:id/edit/documents">
+              <ProjectEditDocuments userId={userId} />
             </PrivateRoute>
             <PrivateRoute exact path="/user/settings">
               <UserSettings />

@@ -8,7 +8,7 @@ class ProjectAdmin(admin.ModelAdmin):
 admin.site.register(Project, ProjectAdmin)
 
 class DocumentAdmin(admin.ModelAdmin):
-  list_display = ('project_id', 'title', 'added_by', 'date_added')
+  list_display = ('title', 'project_id', 'added_by', 'date_added')
   list_filter = ('date_added', )
 
 admin.site.register(Document, DocumentAdmin)

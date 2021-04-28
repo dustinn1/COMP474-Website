@@ -15,11 +15,12 @@ class Project(models.Model):
         return self.project_name
 
 class Document(models.Model):
+    file = models.FileField(blank=False, null=False)
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=255)
     added_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    date_added = models.DateField()
+    date_added = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.title

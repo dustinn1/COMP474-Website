@@ -20,7 +20,14 @@ class ProjectSerializer(serializers.ModelSerializer):
     model = Project
     fields = ('id', 'project_name', 'description', 'visibility', 'date_started', 'date_ended', 'users', 'managers')
 
+class DocumentSerializerRead(serializers.ModelSerializer):
+  added_by = UserSerializer(read_only=True)
+
+  class Meta:
+    model = Document
+    fields = ('id', 'file', 'project_id', 'title', 'description', 'added_by', 'date_added')
+
 class DocumentSerializer(serializers.ModelSerializer):
   class Meta:
     model = Document
-    fields = ('id', 'project_id', 'title', 'description', 'added_by', 'date_added')
+    fields = ('id', 'file', 'project_id', 'title', 'description', 'added_by', 'date_added')

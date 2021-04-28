@@ -106,7 +106,7 @@ export default function Project() {
                     </Row>
                     <hr />
                     <p>Project Name: {project.project_name}</p>
-                    <p>Description:{project.description}</p>
+                    <p>Description: {project.description}</p>
                     <p style={{textTransform: 'capitalize'}}>Visiblity: {project.visibility}</p>
                     <p>{project.date_started} - {project.date_ended}</p>
                   </Tab.Pane>
@@ -116,7 +116,9 @@ export default function Project() {
                         <h3>Documents</h3>
                       </Col>
                       <Col md={2}>
-                        <Button variant="outline-primary" block>Edit Documents</Button>
+                        <LinkContainer to={`/project/${id}/edit/documents`}>
+                          <Button variant="outline-primary" block>Edit Documents</Button>
+                        </LinkContainer>
                       </Col>
                     </Row>
                     <hr />
