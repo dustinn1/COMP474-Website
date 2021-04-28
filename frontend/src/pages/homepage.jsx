@@ -104,7 +104,7 @@ export default function Homepage() {
     </Card.Footer>
   </Card>
   <Card>
-    <FontAwesomeIcon icon={faTasks} size="8x" style={{ color: 'powderblue' }} />
+    <FontAwesomeIcon icon={faTasks} size="8x" style={{ color: 'lightsteelblue' }} />
     <Card.Body>
       <Card.Title>Project Management</Card.Title>
       <Card.Text>
