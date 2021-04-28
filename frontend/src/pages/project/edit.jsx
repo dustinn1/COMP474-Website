@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router';
+import { useParams } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { Helmet } from 'react-helmet';
 import dayjs from 'dayjs';
@@ -11,30 +12,36 @@ import Button from 'react-bootstrap/Button';
 
 import Navigation from '../../components/navigation'
 
-export default function EditProject(props) {
+export default function EditProject() {
   // form states
   const [projectName, setProjectName] = useState('');
   const [description, setDescription] = useState('');
   const [visibility, setVisbility] = useState('public');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [errors, setErrors] = useState([Boolean])
-  const [createdProjectID, setCreatedProjectID] = useState(0);
+  const [errors, setErrors] = useState([Boolean]);
 
-  const [usersList, setUsersList] = useState([]);
-  const [userCheckboxes, setUserCheckboxes] = useState({});
+  const [updated, setUpdated] = useState(false);
 
+  let { id } = useParams();
+  
   useEffect(() => {
-    fetch(`http://localhost:8000/api/users/`, {
+    fetch(`http://localhost:8000/api/project/${id}/`, {
       headers: {'Content-Type': 'application/json'},
     })
     .then((res) => res.json())
-    .then((json) => setUsersList(json))
+    .then((json) => {
+      const visibility = json.visibility === "public" ? "Public" : "Private";
+      setProjectName(json.project_name);
+      setDescription(json.description);
+      setVisbility(visibility);
+      setStartDate(json.date_started);
+      setEndDate(json.date_ended);
+    })
     .catch((err) => {
       console.log(err);
     });
-    setUserCheckboxes({[props.userId]: true})
-  }, [props.userId])
+  }, [id, ])
 
   const handleProjectName = (event) => {
     setProjectName(event.target.value);
@@ -56,27 +63,16 @@ export default function EditProject(props) {
     setEndDate(event.target.value);
   }
 
-  const handleCheckbox = (event) => {
-    setUserCheckboxes(userCheckboxes => ({...userCheckboxes, [event.target.id]: (event.target.checked ? true : false ) }));
-  }
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    let users = [];
-    console.log(userCheckboxes)
-    for (let i in userCheckboxes) {
-      if (userCheckboxes[i]) {
-        users.push(parseInt(i));
-      }
-    }
-    fetch("http://localhost:8000/api/projects/", {
-      method: "POST",
+    fetch(`http://localhost:8000/api/project/${id}/`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         "X-CSRFToken": Cookies.get('csrftoken'),
       },
       credentials: "include",
-      body: JSON.stringify({project_name: projectName, description: description, visibility: visibility.toLowerCase(), date_started: startDate, date_ended: endDate, users: users, managers: []}),
+      body: JSON.stringify({project_name: projectName, description: description, visibility: visibility.toLowerCase(), date_started: startDate, date_ended: endDate}),
     })
     .then((res) => {
       if (!res.ok) {
@@ -86,13 +82,9 @@ export default function EditProject(props) {
           setErrors(errors => ({...errors, description: (data.description) ? true : false}));
           setErrors(errors => ({...errors, date_started: (data.date_started) ? true : false}));
           setErrors(errors => ({...errors, date_ended: (data.date_ended) ? true : false}));
-          users = [];
         })
       } else {
-        res.json()
-        .then((data) => {
-          setCreatedProjectID(data.id);
-        })
+        setUpdated(true);
       }
     })
     .catch((err) => {
@@ -112,8 +104,8 @@ export default function EditProject(props) {
 
   return (
     <>
-      {createdProjectID !== 0 && (
-        <Redirect to={`/project/${createdProjectID}`} />
+      {updated && (
+        <Redirect to={`/project/${id}`} />
       )}
       <Helmet>
         <title>Edit Project</title>
@@ -127,7 +119,7 @@ export default function EditProject(props) {
                 Project Name
               </Form.Label>
               <Col sm="10">
-                <Form.Control type="text" maxLength="50" placeholder="Project Name" value={projectName} onChange={handleProjectName}
+                <Form.Control type="text" maxLength="50" placeholder="Project Name" value={projectName || ''} onChange={handleProjectName}
                   isInvalid={errors['project_name']}/>
                 {errors['project_name'] && (
                   <Form.Control.Feedback type="invalid">Please enter a Project Name.</Form.Control.Feedback>
@@ -139,7 +131,7 @@ export default function EditProject(props) {
                 Description
               </Form.Label>
               <Col sm="10">
-                <Form.Control as="textarea" maxLength="255" placeholder="Description" value={description} onChange={handleDescription}
+                <Form.Control as="textarea" maxLength="255" placeholder="Description" value={description || ''} onChange={handleDescription}
                   isInvalid={errors['description']} />
                 {errors['description'] && (
                   <Form.Control.Feedback type="invalid">Please enter a Description.</Form.Control.Feedback>
@@ -162,7 +154,7 @@ export default function EditProject(props) {
                 Start Date
               </Form.Label>
               <Col sm="10">
-                <Form.Control type="date" value={startDate} onChange={handleStartDate}
+                <Form.Control type="date" value={startDate || ''} onChange={handleStartDate}
                   isInvalid={errors['date_started']} />
                 <span className="project-create-today" onClick={() => getToday("formStartDate")}>Today</span>
                 {errors['date_started'] && (
@@ -175,7 +167,7 @@ export default function EditProject(props) {
                 End Date
               </Form.Label>
               <Col sm="10">
-                <Form.Control type="date" value={endDate} onChange={handleEndDate}
+                <Form.Control type="date" value={endDate || ''} onChange={handleEndDate}
                   isInvalid={errors['date_ended']} />
                 <span className="project-create-today" onClick={() => getToday("formEndDate")}>Today</span>
                 {errors['date_ended'] && (
@@ -183,34 +175,6 @@ export default function EditProject(props) {
                 )}
               </Col>
             </Form.Group>
-            <div className="project-user-list mb-4">
-              <div className="project-user-list-header">
-                <Row>
-                  <Col xs={8}>Username</Col>
-                  <Col xs={4}>Can View</Col>
-                </Row>
-              </div>
-              {usersList.map((user) => {
-                return (
-                  <div className="project-user-list-user" key={user.id}>
-                    <Row>
-                      <Col xs={8}>
-                        {user.username} {(user.id === props.userId) ? "(you)" : ''}</Col>
-                      <Col xs={4}>
-                        <Form.Check
-                          custom
-                          type="checkbox"
-                          id={user.id}
-                          disabled={(user.id === props.userId)}
-                          checked={(user.id === props.userId) || userCheckboxes[user.id] || false}
-                          onChange={handleCheckbox}
-                        />
-                      </Col>
-                    </Row>
-                  </div>
-                )
-              })}
-            </div>
             <div className="text-center">
               <Button variant="outline-primary" type="submit">
                 Edit Project
