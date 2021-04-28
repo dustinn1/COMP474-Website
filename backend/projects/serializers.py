@@ -7,15 +7,20 @@ class UserSerializer(serializers.ModelSerializer):
     model = User
     fields = ('id', 'username', 'email', 'first_name', 'last_name')
 
-class TagSerializer(serializers.ModelSerializer):
+class TagSerializerRead(serializers.ModelSerializer):
   class Meta:
     model = Tag
     fields = ('id', 'name')
 
+class TagSerializerPost(serializers.ModelSerializer):
+  class Meta:
+    model = Tag
+    fields = ('id', 'name', 'project_id')
+
 class ProjectSerializerRead(serializers.ModelSerializer):
   users = UserSerializer(read_only=True, many=True)
   managers = UserSerializer(read_only=True, many=True)
-  tags = TagSerializer(read_only=True, many=True)
+  tags = TagSerializerRead(read_only=True, many=True)
 
   class Meta:
     model = Project
@@ -24,7 +29,7 @@ class ProjectSerializerRead(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
   class Meta:
     model = Project
-    fields = ('id', 'project_name', 'description', 'visibility', 'tags', 'date_started', 'date_ended', 'users', 'managers')
+    fields = ('id', 'project_name', 'description', 'visibility', 'date_started', 'date_ended', 'users', 'managers')
 
 class DocumentSerializerRead(serializers.ModelSerializer):
   added_by = UserSerializer(read_only=True)

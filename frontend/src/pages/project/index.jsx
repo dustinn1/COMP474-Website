@@ -103,6 +103,11 @@ export default function Project() {
                     <hr />
                     <p>Project Name: {project.project_name}</p>
                     <p>Description: {project.description}</p>
+                    Tags: {project.tags && project.tags.map((tag) => {
+                      return (
+                        <Badge variant="primary" key={tag.id} className="mr-1">{tag.name}</Badge>
+                      )
+                    })} <br /><br />
                     <p style={{textTransform: 'capitalize'}}>Visiblity: {project.visibility}</p>
                     <p>{dayjs(project.date_started).format('MMM DD, YYYY')} to {dayjs(project.date_ended).format('MMM DD, YYYY')}</p>
                   </Tab.Pane>

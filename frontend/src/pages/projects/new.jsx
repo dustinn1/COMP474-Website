@@ -8,6 +8,11 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
+import {FormControl} from "react-bootstrap";
+import ReactTagInput from "@pathofdev/react-tag-input";
+import "@pathofdev/react-tag-input/build/index.css";
 
 import Navigation from '../../components/navigation'
 
@@ -16,6 +21,7 @@ export default function NewProject(props) {
   const [projectName, setProjectName] = useState('');
   const [description, setDescription] = useState('');
   const [visibility, setVisbility] = useState('public');
+  const [tags, setTags] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [errors, setErrors] = useState([Boolean])
@@ -63,7 +69,6 @@ export default function NewProject(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     let users = [];
-    console.log(userCheckboxes)
     for (let i in userCheckboxes) {
       if (userCheckboxes[i]) {
         users.push(parseInt(i));
@@ -91,6 +96,19 @@ export default function NewProject(props) {
       } else {
         res.json()
         .then((data) => {
+          let tagsAdd = [];
+          for (let i in tags) {
+            tagsAdd.push({"name": tags[i], "project_id": data.id})
+          }
+          fetch("http://localhost:8000/api/tags/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": Cookies.get('csrftoken'),
+            },
+            credentials: "include",
+            body: JSON.stringify(tagsAdd),
+          })
           setCreatedProjectID(data.id);
         })
       }
@@ -146,7 +164,7 @@ export default function NewProject(props) {
                 )}
               </Col>
             </Form.Group>
-            <Form.Group as={Row} controlId="formProjectName">
+            <Form.Group as={Row} controlId="formVisibility">
               <Form.Label column sm="2">
                 Visiblity
               </Form.Label>
@@ -155,6 +173,18 @@ export default function NewProject(props) {
                   <option>Public</option>
                   <option>Private</option>
                 </Form.Control>
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} controlId="formTags">
+              <Form.Label column sm="2">
+                Tags
+              </Form.Label>
+              <Col sm="10">
+                <ReactTagInput 
+                  tags={tags}
+                  maxTags="8"
+                  onChange={(newTags) => setTags(newTags)}
+                />
               </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="formStartDate">
