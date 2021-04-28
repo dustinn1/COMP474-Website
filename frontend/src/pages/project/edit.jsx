@@ -9,6 +9,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 
@@ -24,7 +25,9 @@ export default function EditProject() {
   const [endDate, setEndDate] = useState('');
   const [errors, setErrors] = useState([Boolean]);
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [updated, setUpdated] = useState(false);
+  const [deleted, setDeleted] = useState(false);
 
   let { id } = useParams();
   
@@ -123,6 +126,23 @@ export default function EditProject() {
     });
   }
 
+  const handleDelete = () => {
+    fetch(`http://localhost:8000/api/project/${id}/`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": Cookies.get('csrftoken'),
+      },
+      credentials: "include",
+    })
+    .then(() => {
+      setDeleted(true);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
   const getToday = (id) => {
     const today = dayjs().format('YYYY-MM-DD');
     document.getElementById(id).value = today;
@@ -137,6 +157,9 @@ export default function EditProject() {
     <>
       {updated && (
         <Redirect to={`/project/${id}`} />
+      )}
+      {deleted && (
+        <Redirect to={'/'} />
       )}
       <Helmet>
         <title>Edit Project</title>
@@ -224,6 +247,28 @@ export default function EditProject() {
               </Button>
             </div>
           </Form>
+          <div className="text-center mt-3">
+            <Button variant="outline-danger" onClick={() => setShowDeleteModal(true)}>Delete Project</Button>
+          </div>
+          <Modal
+            show={showDeleteModal}
+            onHide={() => setShowDeleteModal(false)}
+            size="md"
+            aria-labelledby="contained-modal-title"
+          >
+            <Modal.Header closeButton>
+              <Modal.Title id="contained-modal-title text-center">
+                Delete Project?
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>Are you sure you want to delete this project?</p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
+              <Button variant="danger" onClick={handleDelete}>Delete</Button>
+            </Modal.Footer>
+          </Modal>
         </section>
       </Container>
     </>
