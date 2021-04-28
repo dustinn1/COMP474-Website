@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from .models import Project, Document, Tag
 
-from .serializers import UserSerializer, ProjectSerializer, ProjectSerializerRead, TagSerializer, DocumentSerializerRead, DocumentSerializer
+from .serializers import UserSerializer, ProjectSerializer, ProjectSerializerRead, TagSerializerRead, TagSerializerPost, DocumentSerializerRead, DocumentSerializer
 
 # Get all users
 @api_view(['GET'])
@@ -89,20 +89,29 @@ def project_individual(request, pk):
     )
 
 
-# Get a tags of a project
-@api_view(['GET'])
-def project_tags(request, project_id):
-  try: 
-      tags = Tag.objects.filter(project_id=project_id) 
-  except Tag.DoesNotExist: 
-    return Response(
-      {'message': 'This project does not have tags'}, 
-      status=404
-    ) 
+# Get all tags
+@api_view(['GET', 'POST'])
+def tags(request):
   if request.method == 'GET':
-    serializer = TagSerializer(tags, many=True)
+    tags = Tag.objects.all()
+    serializer = TagSerializerRead(tags, many=True)
     return Response(serializer.data)
+  elif request.method == 'POST':
+    serializer = TagSerializerPost(data=request.data, many=True)
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data, 201)
+    return Response(serializer.errors, 400)
 
+@api_view(['DELETE'])
+def tags_project(request, project_id):
+  if request.method == 'DELETE':
+    tags = Tag.objects.filter(project_id=project_id)
+    tags.delete()
+    return Response(
+      {'message': 'All tags have been deleted for this project'}, 
+      status=204
+    )
 
 @api_view(['GET'])
 def documents_all(request):

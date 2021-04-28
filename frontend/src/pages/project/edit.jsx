@@ -9,6 +9,8 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import ReactTagInput from "@pathofdev/react-tag-input";
+import "@pathofdev/react-tag-input/build/index.css";
 
 import Navigation from '../../components/navigation'
 
@@ -17,6 +19,7 @@ export default function EditProject() {
   const [projectName, setProjectName] = useState('');
   const [description, setDescription] = useState('');
   const [visibility, setVisbility] = useState('public');
+  const [tags, setTags] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [errors, setErrors] = useState([Boolean]);
@@ -37,6 +40,11 @@ export default function EditProject() {
       setVisbility(visibility);
       setStartDate(json.date_started);
       setEndDate(json.date_ended);
+      const currentTags = [];
+      for (let i in json.tags) {
+        currentTags.push(json.tags[i]['name']);
+      }
+      setTags(currentTags);
     })
     .catch((err) => {
       console.log(err);
@@ -84,7 +92,30 @@ export default function EditProject() {
           setErrors(errors => ({...errors, date_ended: (data.date_ended) ? true : false}));
         })
       } else {
+        let tagsAdd = [];
+        for (let i in tags) {
+          tagsAdd.push({"name": tags[i], "project_id": id})
+        }
+        fetch(`http://localhost:8000/api/tags/${id}/`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": Cookies.get('csrftoken'),
+          },
+          credentials: "include",
+        })
+        .then(() => {
+          fetch("http://localhost:8000/api/tags/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": Cookies.get('csrftoken'),
+          },
+          credentials: "include",
+          body: JSON.stringify(tagsAdd),
+        })
         setUpdated(true);
+        })
       }
     })
     .catch((err) => {
@@ -138,7 +169,7 @@ export default function EditProject() {
                 )}
               </Col>
             </Form.Group>
-            <Form.Group as={Row} controlId="formProjectName">
+            <Form.Group as={Row} controlId="formVisiblity">
               <Form.Label column sm="2">
                 Visiblity
               </Form.Label>
@@ -147,6 +178,18 @@ export default function EditProject() {
                   <option>Public</option>
                   <option>Private</option>
                 </Form.Control>
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} controlId="formTags">
+              <Form.Label column sm="2">
+                Tags
+              </Form.Label>
+              <Col sm="10">
+                <ReactTagInput 
+                  tags={tags}
+                  maxTags="8"
+                  onChange={(newTags) => setTags(newTags)}
+                />
               </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="formStartDate">
