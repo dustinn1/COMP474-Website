@@ -9,8 +9,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faPencilAlt, faTrashAlt, faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import bsCustomFileInput from 'bs-custom-file-input';
 
 import Navigation from '../../components/navigation'
 
@@ -18,7 +19,7 @@ export default function EditDocuments(props) {
   const [file, setFile] = useState();
   const [documentTitle, setDocumentTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [errors, setErrors] = useState([Boolean]);
+  const [errors, setErrors] = useState([]);
   const [updated, setUpdated] = useState(false);
 
   const [documents, setDocuments] = useState([]);
@@ -30,7 +31,10 @@ export default function EditDocuments(props) {
       headers: {'Content-Type': 'application/json'},
     })
     .then((res) => res.json())
-    .then((json) => setDocuments(json))
+    .then((json) => {
+      bsCustomFileInput.init();
+      setDocuments(json);
+    })
     .catch((err) => {
       console.log(err);
     });
@@ -68,6 +72,9 @@ export default function EditDocuments(props) {
       if (!res.ok) {
         res.json()
         .then((data) => {
+          setErrors(errors => ({...errors, title: (data.title) ? data.title[0] : ''}));
+          setErrors(errors => ({...errors, description: (data.description) ? data.description[0] : ''}));
+          setErrors(errors => ({...errors, file: (data.file) ? "Please upload a valid file." : ''}));
         })
       } else {
         setUpdated(true);
@@ -99,23 +106,26 @@ export default function EditDocuments(props) {
             </ListGroup.Item>
             {(
               documents.map((document) => {
+                let file_path = document.file.split('/')[3];
                 return (
                   <ListGroup.Item key={document.id}>
                     <Row>
                       <Col md={8}>
-                        <strong>{document.title}</strong> <br />
+                        <a href={`/documents/${file_path}`} target="_blank" rel="noreferrer">
+                          <strong>{document.title}</strong>  <FontAwesomeIcon icon={faExternalLinkAlt} /> 
+                        </a> <br />
                         Description: {document.description} <br />
                         Added by: {document.added_by.username} <br />
                         Added on: {document.date_added}
                       </Col>
                       <Col md={2}>
-                        <Button variant="success">
+                        <Button variant="success" id={`${document.id}-edit`}>
                           <FontAwesomeIcon icon={faPencilAlt} />
                           Edit
                         </Button>
                       </Col>
                       <Col md={2}>
-                        <Button variant="danger">
+                        <Button variant="danger" id={`${document.id}-delete`}>
                           <FontAwesomeIcon icon={faTrashAlt} />
                           Delete
                         </Button>
@@ -132,7 +142,10 @@ export default function EditDocuments(props) {
               </Form.Label>
               <Col sm="10">
                 <Form.Control type="text" maxLength="50" placeholder="Document Title" value={documentTitle} onChange={handleDocumentTitle}
-                  isInvalid=""/>
+                  isInvalid={errors['title']}/>
+                {errors['title'] && (
+                  <Form.Control.Feedback type="invalid">{errors['title']}</Form.Control.Feedback>
+                )}
               </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="formDescription">
@@ -141,7 +154,10 @@ export default function EditDocuments(props) {
               </Form.Label>
               <Col sm="10">
                 <Form.Control as="textarea" maxLength="255" placeholder="Description" value={description} onChange={handleDescription}
-                  isInvalid=""/>
+                  isInvalid={errors['description']}/>
+                {errors['description'] && (
+                  <Form.Control.Feedback type="invalid">{errors['description']}</Form.Control.Feedback>
+                )}
               </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="formDocument">
@@ -154,7 +170,11 @@ export default function EditDocuments(props) {
                   label="Upload"
                   onChange={handleFile}
                   custom
+                  isInvalid={errors['file']}
                 />
+                {errors['file'] && (
+                  <Form.Control.Feedback type="invalid">{errors['file']}</Form.Control.Feedback>
+                )}
               </Col>
             </Form.Group>
             <div className="text-center">

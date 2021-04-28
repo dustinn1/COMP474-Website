@@ -96,7 +96,7 @@ def documents_all(request):
     serializer = DocumentSerializerRead(documents, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
+@api_view(['GET', 'DELETE'])
 def document_individual(request, pk):
   try: 
       document = Document.objects.get(pk=pk) 
@@ -108,6 +108,12 @@ def document_individual(request, pk):
   if request.method == 'GET':
     serializer = DocumentSerializerRead(document)
     return Response(serializer.data)
+  elif request.method == 'DELETE':
+    document.delete()
+    return Response(
+      {'message': 'This project has been deleted'}, 
+      status=204
+    )
 
 @api_view(['GET'])
 def documents_project(request, project_id):

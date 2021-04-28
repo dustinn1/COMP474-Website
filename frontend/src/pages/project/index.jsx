@@ -14,7 +14,7 @@ import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { faFileAlt, faUserCircle, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faFileAlt, faUserCircle, faInfoCircle, faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Navigation from "../../components/navigation";
@@ -22,6 +22,8 @@ import Navigation from "../../components/navigation";
 export default function Project() {
   const [project, setProject] = useState([]);
   const [usersLength, setUsersLength] = useState(0);
+  const [documents, setDocuments] = useState([]);
+  const [documentsLength, setDocumentsLength] = useState(0);
   let { id } = useParams();
 
   useEffect(() => {
@@ -38,6 +40,20 @@ export default function Project() {
         console.log(err);
       });
   }, [id, usersLength]);
+
+  useEffect(() => {
+    fetch(`http://localhost:8000/api/documents/${id}/`, {
+      headers: {'Content-Type': 'application/json'},
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      setDocuments(data);
+      setDocumentsLength(data.length);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }, [id])
 
   return (
     <>
@@ -80,7 +96,7 @@ export default function Project() {
                   <Nav.Item>
                     <Nav.Link eventKey="documents">
                       <FontAwesomeIcon icon={faFileAlt} />
-                      Documents
+                      Documents <Badge variant="secondary">{documentsLength}</Badge>
                     </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
@@ -122,6 +138,22 @@ export default function Project() {
                       </Col>
                     </Row>
                     <hr />
+                    <ListGroup variant="flush">
+                      {documentsLength > 0 && (
+                        documents.map((document) => {
+                          let file_path = document.file.split('/')[3];
+                          return (
+                            <ListGroup.Item key={document.id}>
+                              <a href={`/documents/${file_path}`} target="_blank" rel="noreferrer">
+                                <strong>{document.title}</strong>  <FontAwesomeIcon icon={faExternalLinkAlt} /> 
+                              </a> <br />
+                              Description: {document.description} <br />
+                              Added by: {document.added_by.username} <br />
+                              Added on: {document.date_added}
+                            </ListGroup.Item>
+                          )
+                        }))}
+                    </ListGroup>
                   </Tab.Pane>
                   <Tab.Pane eventKey="members">
                     <Row>
